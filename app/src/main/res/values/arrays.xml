@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="news_and_hot_filters">
+        <item name="coming_soon">Coming Soon</item>
+        <item name="everyone_watching">Everyone\'s Watching</item>
+        <item name="mobile_games">Mobile Games</item>
+        <item name="top_10_tv_shows">Top 10 TV Shows</item>
+        <item name="top_10_movies">Top 10 Movies</item>
+    </string-array>
+    <string-array name="home_filters">
+        <item name="tv_shows">TV Shows</item>
+        <item name="movies">Movies</item>
+    </string-array>
+</resources>

@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Netflix Clone</string>
+    <string name="remind_me">Remind Me</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="play">Play</string>
+    <string name="my_list">My List</string>
+
+    <!-- Labels -->
+    <string name="label_home">Home</string>
+    <string name="label_games">Games</string>
+    <string name="label_news_and_hot">News &amp; Hot</string>
+    <string name="label_my_netflix">My Netflix</string>
+
+    <!-- Titles -->
+    <string name="title_news_and_hot_screen">News &amp; Hot</string>
+    <string name="title_my_netflix_screen">My Netflix</string>
+
+    <!-- Errors -->
+    <string name="error_unexpected">An unexpected error occurred.</string>
+    <string name="error_unknown">Something wrong happened. Please try again.</string>
+    <string name="error_no_internet">No internet connection. Make sure that Wi-Fi or mobile data is turned on, then try again.</string>
+    <string name="downloads">Downloads</string>
+    <string name="notifications">Notifications</string>
+</resources>
