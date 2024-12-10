@@ -67,6 +67,7 @@ import com.netflix.clone.ui.theme.NetflixCloneTheme
 fun HomeScreen(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
+    navigateToMovieScreen: (id: Int) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val appBarColors =
@@ -128,6 +129,7 @@ fun HomeScreen(
                         .verticalScroll(scrollState)
                         .statusBarsPadding()
                         .padding(top = 96.dp),
+                navigateToMovieScreen = navigateToMovieScreen,
             )
             Column {
                 TopAppBar(
@@ -200,13 +202,14 @@ fun HomeScreen(
 fun HomeScreenContent(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
+    navigateToMovieScreen: (id: Int) -> Unit,
 ) {
     Column(modifier = modifier.padding(vertical = 12.dp)) {
         MovieCard(
             posterPath = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZ8ohCXR_9pNW208fEDguPU1-K3Uc5fAliCB_cX3CTo9CfYBhu2uCPQ1pTTQQpEYfrlYoGoj15j3LIhblnKhta4huY3QcDmZad4E3q-51rCjRTUNbpO_4WiVBilN97cnLSFQA7KZCzjtLJ3l6-XCfmPd5rKg_GnOGSGeAu6h7tb6v91QANtnijmbuQnCX3/s4096/MV5BMjEzN2ZjYjUtZTI3NC00MzMyLWJiNDAtMDBiZGEzNTBiY2RkXkEyXkFqcGc@._V1_.jpg",
             modifier = Modifier.padding(16.dp),
         )
-        PopularMovies(uiState = uiState, onItemClick = { /*TODO*/ })
+        PopularMovies(uiState = uiState, onItemClick = navigateToMovieScreen)
         Trending(uiState = uiState, onItemClick = { /*TODO*/ })
         PopularSeries(
             items = uiState.popularSeries.collectAsLazyPagingItems(),
@@ -332,6 +335,7 @@ private fun HomeScreenPreview() {
         HomeScreen(
             uiState = HomeUiState(),
             modifier = Modifier.fillMaxSize().background(ExtendedTheme.colors.neutralBlack),
+            navigateToMovieScreen = {},
         )
     }
 }

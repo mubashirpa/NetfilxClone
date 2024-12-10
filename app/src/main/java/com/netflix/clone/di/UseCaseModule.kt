@@ -1,6 +1,7 @@
 package com.netflix.clone.di
 
 import com.netflix.clone.domain.usecase.GetListUseCase
+import com.netflix.clone.domain.usecase.movie.GetMovieDetailsUseCase
 import com.netflix.clone.domain.usecase.movie.GetPopularMoviesUseCase
 import com.netflix.clone.domain.usecase.movie.GetUpcomingMoviesUseCase
 import com.netflix.clone.domain.usecase.series.GetPopularSeriesUseCase
@@ -15,4 +16,5 @@ val useCaseModule =
         singleOf(::GetPopularSeriesUseCase)
         singleOf(::GetUpcomingMoviesUseCase)
         singleOf(::GetListUseCase)
+        singleOf(::GetMovieDetailsUseCase)
     }

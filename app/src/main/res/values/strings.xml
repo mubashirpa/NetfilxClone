@@ -21,4 +21,10 @@
     <string name="error_no_internet">No internet connection. Make sure that Wi-Fi or mobile data is turned on, then try again.</string>
     <string name="downloads">Downloads</string>
     <string name="notifications">Notifications</string>
+    <string name="download">Download</string>
+    <string name="starring">Starring: %1$s</string>
+    <string name="director">Director: %1$s</string>
+    <string name="rate">Rate</string>
+    <string name="share">Share</string>
+    <string name="more_like_this">More Like This</string>
 </resources>

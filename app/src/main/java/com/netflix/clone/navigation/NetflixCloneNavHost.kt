@@ -11,6 +11,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.netflix.clone.R
+import com.netflix.clone.presentation.content.MovieScreen
+import com.netflix.clone.presentation.content.MovieViewModel
 import com.netflix.clone.presentation.home.HomeScreen
 import com.netflix.clone.presentation.home.HomeViewModel
 import com.netflix.clone.presentation.news.NewsAndHotScreen
@@ -32,7 +34,12 @@ fun NetflixCloneNavHost(
     ) {
         composable<Screen.Home> {
             val viewModel = koinViewModel<HomeViewModel>()
-            HomeScreen(uiState = viewModel.uiState)
+            HomeScreen(
+                uiState = viewModel.uiState,
+                navigateToMovieScreen = { id ->
+                    navController.navigate(Screen.MovieScreen(id))
+                },
+            )
         }
         composable<Screen.Games> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -46,6 +53,10 @@ fun NetflixCloneNavHost(
         composable<Screen.MyNetflix> {
             val viewModel = koinViewModel<MyNetflixViewModel>()
             MyNetflixScreen(uiState = viewModel.uiState)
+        }
+        composable<Screen.MovieScreen> {
+            val viewModel = koinViewModel<MovieViewModel>()
+            MovieScreen(uiState = viewModel.uiState)
         }
     }
 }
