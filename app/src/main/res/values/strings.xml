@@ -4,6 +4,20 @@
     <string name="coming_soon">Coming Soon</string>
     <string name="play">Play</string>
     <string name="my_list">My List</string>
+    <string name="downloads">Downloads</string>
+    <string name="notifications">Notifications</string>
+    <string name="download">Download</string>
+    <string name="starring">Starring: %1$s</string>
+    <string name="director">Director: %1$s</string>
+    <string name="rate">Rate</string>
+    <string name="share">Share</string>
+    <string name="more_like_this">More Like This</string>
+    <string name="seasons">%1$s Seasons</string>
+    <string name="download_s1_e1">Download S1:E1</string>
+    <string name="creators">Creators: %1$s</string>
+    <string name="download_season_1">Download Season 1</string>
+    <string name="episodes">Episodes</string>
+    <string name="_1st_season">1st Season</string>
 
     <!-- Labels -->
     <string name="label_home">Home</string>
@@ -19,12 +33,4 @@
     <string name="error_unexpected">An unexpected error occurred.</string>
     <string name="error_unknown">Something wrong happened. Please try again.</string>
     <string name="error_no_internet">No internet connection. Make sure that Wi-Fi or mobile data is turned on, then try again.</string>
-    <string name="downloads">Downloads</string>
-    <string name="notifications">Notifications</string>
-    <string name="download">Download</string>
-    <string name="starring">Starring: %1$s</string>
-    <string name="director">Director: %1$s</string>
-    <string name="rate">Rate</string>
-    <string name="share">Share</string>
-    <string name="more_like_this">More Like This</string>
 </resources>

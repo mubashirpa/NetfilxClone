@@ -68,6 +68,7 @@ fun HomeScreen(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
     navigateToMovieScreen: (id: Int) -> Unit,
+    navigateToTvScreen: (id: Int) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val appBarColors =
@@ -130,6 +131,7 @@ fun HomeScreen(
                         .statusBarsPadding()
                         .padding(top = 96.dp),
                 navigateToMovieScreen = navigateToMovieScreen,
+                navigateToTvScreen = navigateToTvScreen,
             )
             Column {
                 TopAppBar(
@@ -187,6 +189,7 @@ fun HomeScreen(
                                 Icon(
                                     imageVector = Icons.Default.KeyboardArrowDown,
                                     contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             },
                             shape = MaterialTheme.shapes.large,
@@ -203,6 +206,7 @@ fun HomeScreenContent(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
     navigateToMovieScreen: (id: Int) -> Unit,
+    navigateToTvScreen: (id: Int) -> Unit,
 ) {
     Column(modifier = modifier.padding(vertical = 12.dp)) {
         MovieCard(
@@ -213,7 +217,7 @@ fun HomeScreenContent(
         Trending(uiState = uiState, onItemClick = { /*TODO*/ })
         PopularSeries(
             items = uiState.popularSeries.collectAsLazyPagingItems(),
-            onItemClick = { /*TODO*/ },
+            onItemClick = navigateToTvScreen,
         )
     }
 }
@@ -336,6 +340,7 @@ private fun HomeScreenPreview() {
             uiState = HomeUiState(),
             modifier = Modifier.fillMaxSize().background(ExtendedTheme.colors.neutralBlack),
             navigateToMovieScreen = {},
+            navigateToTvScreen = {},
         )
     }
 }
