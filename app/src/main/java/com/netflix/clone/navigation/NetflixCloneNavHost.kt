@@ -11,8 +11,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.netflix.clone.R
-import com.netflix.clone.presentation.content.MovieScreen
-import com.netflix.clone.presentation.content.MovieViewModel
+import com.netflix.clone.presentation.movie.MovieScreen
+import com.netflix.clone.presentation.movie.MovieViewModel
 import com.netflix.clone.presentation.home.HomeScreen
 import com.netflix.clone.presentation.home.HomeViewModel
 import com.netflix.clone.presentation.news.NewsAndHotScreen

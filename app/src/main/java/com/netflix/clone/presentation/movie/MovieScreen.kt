@@ -1,4 +1,4 @@
-package com.netflix.clone.presentation.content
+package com.netflix.clone.presentation.movie
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

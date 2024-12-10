@@ -1,4 +1,4 @@
-package com.netflix.clone.presentation.content
+package com.netflix.clone.presentation.movie
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
