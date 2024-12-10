@@ -2,7 +2,6 @@ package com.netflix.clone.presentation.movie
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,10 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -45,9 +42,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -65,15 +60,19 @@ import com.netflix.clone.core.utils.Resource
 import com.netflix.clone.domain.model.movie.MovieResultModel
 import com.netflix.clone.domain.model.movie.details.MovieDetails
 import com.netflix.clone.presentation.components.PrimaryButtonLarge
+import com.netflix.clone.presentation.components.ReactionButton
 import com.netflix.clone.presentation.home.components.MovieListItem
 import com.netflix.clone.ui.theme.ExtendedTheme
 import com.netflix.clone.ui.theme.NetflixCloneTheme
+import kotlin.collections.orEmpty
+import kotlin.collections.take
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieScreen(
     uiState: MovieUiState,
     modifier: Modifier = Modifier,
+    onNavigateUp: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -81,7 +80,7 @@ fun MovieScreen(
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = onNavigateUp) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription = null,
@@ -117,8 +116,7 @@ fun MovieScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
-                    .verticalScroll(rememberScrollState()),
+                    .padding(innerPadding),
         ) {
             when (uiState.movieDetailsResource) {
                 is Resource.Empty -> {}
@@ -138,7 +136,10 @@ fun MovieScreen(
                     val movieDetails = uiState.movieDetailsResource.data
 
                     if (movieDetails != null) {
-                        ContentContent(movieDetails = movieDetails)
+                        MovieContent(
+                            movieDetails = movieDetails,
+                            modifier = Modifier.verticalScroll(rememberScrollState()),
+                        )
                     }
                 }
             }
@@ -148,7 +149,7 @@ fun MovieScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ContentContent(
+private fun MovieContent(
     movieDetails: MovieDetails,
     modifier: Modifier = Modifier,
 ) {
@@ -204,39 +205,7 @@ private fun ContentContent(
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
             Reactions(modifier = Modifier.padding(vertical = 12.dp))
-
-            HorizontalDivider()
-
-            PrimaryScrollableTabRow(
-                selectedTabIndex = 0,
-                containerColor = Color.Transparent,
-                contentColor = ExtendedTheme.colors.neutralWhite,
-                edgePadding = 0.dp,
-                indicator = {
-                    FancyIndicator(
-                        modifier =
-                            Modifier.tabIndicatorOffset(
-                                selectedTabIndex = 0,
-                                matchContentSize = true,
-                            ),
-                    )
-                },
-                divider = {},
-            ) {
-                Tab(
-                    selected = true,
-                    onClick = { /*TODO*/ },
-                    text = {
-                        Text(
-                            text = stringResource(R.string.more_like_this),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
-                    selectedContentColor = ExtendedTheme.colors.neutralGrayLight2,
-                )
-            }
-            Collection(collection = movieDetails.recommendations.orEmpty().take(9))
+            Extra(movieDetails = movieDetails)
         }
     }
 }
@@ -304,6 +273,8 @@ private fun TitleAndButtons(
         Text(
             text = overview,
             color = ExtendedTheme.colors.neutralGrayLight3,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 3,
             style = MaterialTheme.typography.bodyMedium,
         )
         Column {
@@ -345,39 +316,50 @@ private fun Reactions(modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ReactionButton(
-    onClick: () -> Unit,
-    icon: ImageVector,
-    label: String,
+private fun Extra(
+    movieDetails: MovieDetails,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier =
-            modifier
-                .sizeIn(minWidth = 96.dp, minHeight = 96.dp)
-                .clip(CircleShape)
-                .clickable(onClick = onClick),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = ExtendedTheme.colors.neutralWhite,
-        )
-        Text(
-            text = label,
-            modifier = Modifier.padding(top = 4.dp),
-            color = ExtendedTheme.colors.neutralWhite,
-            style = MaterialTheme.typography.labelMedium,
-        )
+    Column(modifier = modifier) {
+        HorizontalDivider()
+        PrimaryScrollableTabRow(
+            selectedTabIndex = 0,
+            containerColor = Color.Transparent,
+            contentColor = ExtendedTheme.colors.neutralWhite,
+            edgePadding = 0.dp,
+            indicator = {
+                FancyIndicator(
+                    modifier =
+                        Modifier.tabIndicatorOffset(
+                            selectedTabIndex = 0,
+                            matchContentSize = true,
+                        ),
+                )
+            },
+            divider = {},
+        ) {
+            Tab(
+                selected = true,
+                onClick = { /*TODO*/ },
+                text = {
+                    Text(
+                        text = stringResource(R.string.more_like_this),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+                selectedContentColor = ExtendedTheme.colors.neutralGrayLight2,
+            )
+        }
+        Collection(collection = movieDetails.recommendations.orEmpty().take(9))
     }
 }
 
 @Composable
 private fun FancyIndicator(modifier: Modifier = Modifier) {
-    Box(modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         Box(
             modifier =
                 Modifier
@@ -423,6 +405,7 @@ private fun ContentScreenPreview() {
         MovieScreen(
             uiState = MovieUiState(movieDetailsResource = Resource.Success(MovieDetails())),
             modifier = Modifier.fillMaxSize(),
+            onNavigateUp = {},
         )
     }
 }
