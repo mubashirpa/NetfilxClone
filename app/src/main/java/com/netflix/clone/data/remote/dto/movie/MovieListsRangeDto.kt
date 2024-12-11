@@ -1,7 +1,6 @@
 package com.netflix.clone.data.remote.dto.movie
 
 import com.google.gson.annotations.SerializedName
-import com.netflix.clone.data.remote.dto.movie.Dates
 
 data class MovieListsRangeDto(
     val dates: Dates? = null,
