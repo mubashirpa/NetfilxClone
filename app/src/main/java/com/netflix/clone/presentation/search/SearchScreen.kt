@@ -110,9 +110,9 @@ private fun SearchScreenContent(
             Text(
                 text = stringResource(R.string.recommended_tv_shows_movies),
                 modifier =
-                Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 24.dp, bottom = 8.dp),
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 24.dp, bottom = 8.dp),
                 color = ExtendedTheme.colors.neutralWhite,
                 style = MaterialTheme.typography.titleLarge,
             )
@@ -121,7 +121,7 @@ private fun SearchScreenContent(
             val name = if (it.title.isNullOrEmpty()) it.name else it.title
             RecommendedListItem(
                 name = name.orEmpty(),
-                backdropPath = it.posterPath,
+                backdropPath = it.backdropPath,
                 onClick = { /*TODO*/ },
             )
         }
@@ -139,9 +139,9 @@ private fun Games(
         Text(
             text = title,
             modifier =
-            Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 16.dp, bottom = 8.dp),
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp, bottom = 8.dp),
             color = ExtendedTheme.colors.neutralWhite,
             style = MaterialTheme.typography.titleLarge,
         )
@@ -176,18 +176,18 @@ private fun SearchTextField() {
         value = value,
         onValueChange = { value = it },
         modifier =
-        Modifier
-            .height(56.dp)
-            .fillMaxWidth(),
+            Modifier
+                .height(56.dp)
+                .fillMaxWidth(),
         textStyle = mergedTextStyle,
         maxLines = 1,
         cursorBrush = SolidColor(textColor),
         decorationBox = { innerTextField ->
             Row(
                 modifier =
-                Modifier
-                    .background(ExtendedTheme.colors.neutralGrayDark1)
-                    .padding(16.dp),
+                    Modifier
+                        .background(ExtendedTheme.colors.neutralGrayDark1)
+                        .padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 Icon(

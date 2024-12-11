@@ -5,6 +5,7 @@ import com.netflix.clone.domain.model.trending.TrendingResultModel
 
 fun TrendingResult.toTrendingResultModel(): TrendingResultModel =
     TrendingResultModel(
+        backdropPath,
         firstAirDate,
         id,
         mediaType,

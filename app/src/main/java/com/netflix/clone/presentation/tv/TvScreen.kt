@@ -207,9 +207,7 @@ private fun TvContent(
                         .orEmpty(),
                 creators =
                     tvDetails
-                        .credits
-                        ?.crew
-                        ?.filter { it.job == "Director" }
+                        .createdBy
                         ?.joinToString(", ") { it.name.orEmpty() }
                         .orEmpty(),
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -407,7 +405,10 @@ private fun Episodes(episodes: List<SeriesSeason>) {
                 name = item.name.orEmpty(),
                 duration = item.episodeCount.toString(),
                 backdropPath = item.posterPath,
-                overview = item.overview.orEmpty(),
+                overview =
+                    item.overview
+                        .orEmpty()
+                        .ifEmpty { "${item.name} of Breaking Bad premiered on ${item.airDate}" },
                 onClick = {},
             )
         }

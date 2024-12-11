@@ -1,6 +1,7 @@
 package com.netflix.clone.domain.model.trending
 
 data class TrendingResultModel(
+    val backdropPath: String? = null,
     val firstAirDate: String? = null,
     val id: Int? = null,
     val mediaType: String? = null,
