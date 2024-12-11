@@ -1,5 +1,6 @@
 package com.netflix.clone.di
 
+import com.netflix.clone.presentation.games.GamesViewModel
 import com.netflix.clone.presentation.home.HomeViewModel
 import com.netflix.clone.presentation.movie.MovieViewModel
 import com.netflix.clone.presentation.news.NewsAndHotViewModel
@@ -15,4 +16,5 @@ val viewModelModule =
         viewModelOf(::MyNetflixViewModel)
         viewModelOf(::MovieViewModel)
         viewModelOf(::TvViewModel)
+        viewModelOf(::GamesViewModel)
     }

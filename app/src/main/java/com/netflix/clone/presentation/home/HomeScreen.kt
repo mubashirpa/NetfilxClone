@@ -335,7 +335,7 @@ private fun PopularSeries(
                             MovieListItem(
                                 onClick = { item.id?.let(onItemClick) },
                                 posterPath = item.posterPath,
-                                modifier = Modifier.width(150.dp),
+                                modifier = Modifier.width(160.dp),
                                 ratio = 9f / 16f,
                             )
                         }

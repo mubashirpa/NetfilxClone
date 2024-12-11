@@ -73,7 +73,7 @@ fun MyNetflixScreen(
         )
         TopAppBar(
             title = {
-                Text(text = stringResource(R.string.label_my_netflix))
+                Text(text = stringResource(R.string.title_my_netflix_screen))
             },
             actions = {
                 IconButton(onClick = { /*TODO*/ }) {
