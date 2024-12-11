@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -47,12 +46,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.netflix.clone.R
-import com.netflix.clone.core.utils.Resource
+import com.netflix.clone.domain.model.list.ListResultModel
+import com.netflix.clone.domain.model.movie.MovieResultModel
 import com.netflix.clone.presentation.home.components.MovieListItem
 import com.netflix.clone.ui.theme.ExtendedTheme
 import com.netflix.clone.ui.theme.NetflixCloneTheme
-import kotlin.collections.orEmpty
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -137,7 +141,16 @@ private fun MyNetflixScreenContent(
             color = ExtendedTheme.colors.systemBlue,
             modifier = Modifier.clickable(onClick = { /*TODO*/ }),
         )
-        MyList(onItemClick = {}, uiState = uiState, modifier = Modifier.padding(top = 8.dp))
+        MyList(
+            onItemClick = { /*TODO*/ },
+            items = uiState.myList.collectAsLazyPagingItems(),
+            modifier = Modifier.padding(top = 8.dp),
+        )
+        NowPlayingMovies(
+            onItemClick = { /*TODO*/ },
+            items = uiState.nowPlayingMovies.collectAsLazyPagingItems(),
+            modifier = Modifier.padding(top = 12.dp),
+        )
     }
 }
 
@@ -182,16 +195,17 @@ private fun MyNetflixListItem(
 @Composable
 private fun MyList(
     onItemClick: (id: Int) -> Unit,
-    uiState: MyNetflixUiState,
+    items: LazyPagingItems<ListResultModel>,
     modifier: Modifier = Modifier,
 ) {
-    if (uiState.myListResource is Resource.Success) {
-        val myList = uiState.myListResource.data.orEmpty()
-
+    if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
         Column(modifier = modifier) {
             Text(
                 text = stringResource(R.string.my_list),
-                modifier = Modifier.padding(horizontal = 16.dp).padding(top = 16.dp, bottom = 8.dp),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp, bottom = 8.dp),
                 color = ExtendedTheme.colors.neutralWhite,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium,
@@ -202,14 +216,59 @@ private fun MyList(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 content = {
                     items(
-                        items = myList,
-                        key = { it.id!! },
-                    ) { result ->
-                        MovieListItem(
-                            onClick = { result.id?.let(onItemClick) },
-                            posterPath = result.posterPath,
-                            modifier = Modifier.width(100.dp),
-                        )
+                        count = items.itemCount,
+                        key = items.itemKey(),
+                        contentType = items.itemContentType(),
+                    ) { index ->
+                        items[index]?.let { item ->
+                            MovieListItem(
+                                onClick = { item.id?.let(onItemClick) },
+                                posterPath = item.posterPath,
+                                modifier = Modifier.width(100.dp),
+                            )
+                        }
+                    }
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun NowPlayingMovies(
+    onItemClick: (id: Int) -> Unit,
+    items: LazyPagingItems<MovieResultModel>,
+    modifier: Modifier = Modifier,
+) {
+    if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
+        Column(modifier = modifier) {
+            Text(
+                text = stringResource(R.string.trailers_you_have_watched),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp, bottom = 8.dp),
+                color = ExtendedTheme.colors.neutralWhite,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                content = {
+                    items(
+                        count = items.itemCount,
+                        key = items.itemKey(),
+                        contentType = items.itemContentType(),
+                    ) { index ->
+                        items[index]?.let { item ->
+                            MovieListItem(
+                                onClick = { item.id?.let(onItemClick) },
+                                posterPath = item.posterPath,
+                                modifier = Modifier.width(100.dp),
+                            )
+                        }
                     }
                 },
             )

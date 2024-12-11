@@ -55,6 +55,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.netflix.clone.R
 import com.netflix.clone.core.utils.Resource
+import com.netflix.clone.domain.model.movie.MovieResultModel
 import com.netflix.clone.domain.model.series.SeriesResultModel
 import com.netflix.clone.presentation.home.components.MovieCard
 import com.netflix.clone.presentation.home.components.MovieListItem
@@ -215,7 +216,7 @@ fun HomeScreenContent(
             modifier = Modifier.padding(16.dp),
         )
         PopularMovies(
-            uiState = uiState,
+            items = uiState.popularMovies.collectAsLazyPagingItems(),
             onItemClick = navigateToMovieScreen,
         )
         TopRatedSeries(
@@ -235,11 +236,10 @@ fun HomeScreenContent(
 
 @Composable
 private fun PopularMovies(
-    uiState: HomeUiState,
+    items: LazyPagingItems<MovieResultModel>,
     onItemClick: (id: Int) -> Unit,
 ) {
-    if (uiState.popularMoviesResource is Resource.Success) {
-        val popularList = uiState.popularMoviesResource.data.orEmpty()
+    if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
         Column {
             Text(
                 text = "Popular Movies",
@@ -254,14 +254,17 @@ private fun PopularMovies(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 content = {
                     items(
-                        items = popularList,
-                        key = { it.id!! },
-                    ) { result ->
-                        MovieListItem(
-                            onClick = { result.id?.let(onItemClick) },
-                            posterPath = result.posterPath,
-                            modifier = Modifier.width(100.dp),
-                        )
+                        count = items.itemCount,
+                        key = items.itemKey(),
+                        contentType = items.itemContentType(),
+                    ) { index ->
+                        items[index]?.let { item ->
+                            MovieListItem(
+                                onClick = { item.id?.let(onItemClick) },
+                                posterPath = item.posterPath,
+                                modifier = Modifier.width(100.dp),
+                            )
+                        }
                     }
                 },
             )

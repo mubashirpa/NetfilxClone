@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.netflix.clone.domain.usecase.movie.GetUpcomingMoviesUseCase
+import com.netflix.clone.domain.usecase.GetUpcomingMoviesUseCase
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 

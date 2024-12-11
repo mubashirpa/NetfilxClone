@@ -1,8 +1,6 @@
 package com.netflix.clone.data.remote.dto.list
 
 import com.google.gson.annotations.SerializedName
-import com.netflix.clone.data.remote.dto.list.CreatedBy
-import com.netflix.clone.data.remote.dto.list.ListResult
 
 data class ListsDto(
     @SerializedName("average_rating")

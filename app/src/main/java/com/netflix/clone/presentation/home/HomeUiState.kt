@@ -8,11 +8,11 @@ import com.netflix.clone.domain.model.trending.TrendingResultModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 data class HomeUiState(
-    val popularMoviesResource: Resource<List<MovieResultModel>> = Resource.Empty(),
+    val popularMovies: MutableStateFlow<PagingData<MovieResultModel>> =
+        MutableStateFlow(PagingData.empty()),
     val trendingResource: Resource<List<TrendingResultModel>> = Resource.Empty(),
-    val popularSeries: MutableStateFlow<PagingData<SeriesResultModel>> = MutableStateFlow(PagingData.empty()),
+    val popularSeries: MutableStateFlow<PagingData<SeriesResultModel>> =
+        MutableStateFlow(PagingData.empty()),
     val topRatedSeries: MutableStateFlow<PagingData<SeriesResultModel>> =
-        MutableStateFlow(
-            PagingData.empty(),
-        ),
+        MutableStateFlow(PagingData.empty()),
 )

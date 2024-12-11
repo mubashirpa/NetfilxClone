@@ -6,15 +6,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.netflix.clone.domain.usecase.movie.GetPopularMoviesUseCase
-import com.netflix.clone.domain.usecase.series.GetPopularSeriesUseCase
-import com.netflix.clone.domain.usecase.series.GetTopRatedSeriesUseCase
-import com.netflix.clone.domain.usecase.trending.GetTrendingUseCase
+import com.netflix.clone.domain.usecase.GetPopularMoviesUseCase
+import com.netflix.clone.domain.usecase.GetPopularSeriesUseCase
+import com.netflix.clone.domain.usecase.GetTopRatedSeriesUseCase
+import com.netflix.clone.domain.usecase.GetTrendingUseCase
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 class HomeViewModel(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
@@ -33,11 +32,14 @@ class HomeViewModel(
     }
 
     private fun getPopularMovies() {
-        val locale = Locale.getDefault()
-        getPopularMoviesUseCase(region = locale.country)
-            .onEach { resource ->
-                uiState = uiState.copy(popularMoviesResource = resource)
-            }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            getPopularMoviesUseCase()
+                .distinctUntilChanged()
+                .cachedIn(viewModelScope)
+                .collect {
+                    uiState.popularMovies.value = it
+                }
+        }
     }
 
     private fun getTrending() {

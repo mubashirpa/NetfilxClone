@@ -1,4 +1,4 @@
-package com.netflix.clone.domain.usecase.movie
+package com.netflix.clone.domain.usecase
 
 import androidx.paging.PagingData
 import androidx.paging.map
@@ -8,7 +8,7 @@ import com.netflix.clone.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetPopularMoviesPagingUseCase(
+class GetNowPlayingMoviesUseCase(
     private val movieRepository: MovieRepository,
 ) {
     suspend operator fun invoke(
@@ -16,7 +16,7 @@ class GetPopularMoviesPagingUseCase(
         page: Int = 1,
         region: String? = null,
     ): Flow<PagingData<MovieResultModel>> =
-        movieRepository.getPopularMoviesPaging(language, page, region).map { pagingData ->
+        movieRepository.getNowPlayingMovies(language, page, region).map { pagingData ->
             pagingData.map {
                 it.toMovieResultModel()
             }

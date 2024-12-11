@@ -5,24 +5,43 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.netflix.clone.domain.usecase.GetListUseCase
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import com.netflix.clone.domain.usecase.GetNowPlayingMoviesUseCase
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 class MyNetflixViewModel(
     private val getListUseCase: GetListUseCase,
+    private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase,
 ) : ViewModel() {
     var uiState by mutableStateOf(MyNetflixUiState())
         private set
 
     init {
         getMyList()
+        getNowPlayingMovies()
     }
 
     private fun getMyList() {
-        getListUseCase(8257364)
-            .onEach { resource ->
-                uiState = uiState.copy(myListResource = resource)
-            }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            getListUseCase(8257364)
+                .distinctUntilChanged()
+                .cachedIn(viewModelScope)
+                .collect {
+                    uiState.myList.value = it
+                }
+        }
+    }
+
+    private fun getNowPlayingMovies() {
+        viewModelScope.launch {
+            getNowPlayingMoviesUseCase()
+                .distinctUntilChanged()
+                .cachedIn(viewModelScope)
+                .collect {
+                    uiState.nowPlayingMovies.value = it
+                }
+        }
     }
 }

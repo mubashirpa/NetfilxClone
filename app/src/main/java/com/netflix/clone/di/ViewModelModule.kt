@@ -11,10 +11,10 @@ import org.koin.dsl.module
 
 val viewModelModule =
     module {
-        viewModelOf(::HomeViewModel)
-        viewModelOf(::NewsAndHotViewModel)
-        viewModelOf(::MyNetflixViewModel)
-        viewModelOf(::MovieViewModel)
-        viewModelOf(::TvViewModel)
         viewModelOf(::GamesViewModel)
+        viewModelOf(::HomeViewModel)
+        viewModelOf(::MovieViewModel)
+        viewModelOf(::MyNetflixViewModel)
+        viewModelOf(::NewsAndHotViewModel)
+        viewModelOf(::TvViewModel)
     }

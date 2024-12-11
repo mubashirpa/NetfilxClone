@@ -28,6 +28,8 @@ interface MovieApi {
     @GET("4/list/{list_id}")
     suspend fun getList(
         @Path("list_id") listId: Int,
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int = 1,
     ): ListsDto
 
     // Movie Lists

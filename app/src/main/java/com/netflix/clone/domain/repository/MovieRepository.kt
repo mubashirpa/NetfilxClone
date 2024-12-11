@@ -1,7 +1,7 @@
 package com.netflix.clone.domain.repository
 
 import androidx.paging.PagingData
-import com.netflix.clone.data.remote.dto.list.ListsDto
+import com.netflix.clone.data.remote.dto.list.ListResult
 import com.netflix.clone.data.remote.dto.movie.MovieListsDto
 import com.netflix.clone.data.remote.dto.movie.MovieResult
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
@@ -18,7 +18,11 @@ import kotlinx.coroutines.flow.Flow
 interface MovieRepository {
     // List
 
-    suspend fun getList(listId: Int): ListsDto
+    suspend fun getList(
+        listId: Int,
+        language: String = "en-US",
+        page: Int = 1,
+    ): Flow<PagingData<ListResult>>
 
     // Movie Lists
 

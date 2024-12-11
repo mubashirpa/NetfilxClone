@@ -1,9 +1,9 @@
-package com.netflix.clone.domain.usecase.movie
+package com.netflix.clone.domain.usecase
 
 import com.netflix.clone.core.utils.Resource
 import com.netflix.clone.core.utils.UiText
-import com.netflix.clone.data.remote.mapper.toMovieResultModel
-import com.netflix.clone.domain.model.movie.MovieResultModel
+import com.netflix.clone.data.remote.mapper.toMovieDetails
+import com.netflix.clone.domain.model.movie.details.MovieDetails
 import com.netflix.clone.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,31 +11,27 @@ import retrofit2.HttpException
 import java.io.IOException
 import com.netflix.clone.R.string as Strings
 
-class GetPopularMoviesUseCase(
+class GetMovieDetailsUseCase(
     private val movieRepository: MovieRepository,
 ) {
     operator fun invoke(
+        movieId: Int,
+        appendToResponse: String? = null,
         language: String = "en-US",
-        page: Int = 1,
-        region: String? = null,
-    ): Flow<Resource<List<MovieResultModel>>> =
+    ): Flow<Resource<MovieDetails>> =
         flow {
             try {
                 emit(Resource.Loading())
-                val results =
+                val details =
                     movieRepository
-                        .getPopularMovies(
-                            language,
-                            page,
-                            region,
-                        ).results
-                        ?.map { it.toMovieResultModel() }
-                emit(Resource.Success(results))
-            } catch (e: IOException) {
+                        .getMovieDetails(movieId, appendToResponse, language)
+                        .toMovieDetails()
+                emit(Resource.Success(details))
+            } catch (_: IOException) {
                 emit(Resource.Error(UiText.StringResource(Strings.error_no_internet)))
-            } catch (e: HttpException) {
+            } catch (_: HttpException) {
                 emit(Resource.Error(UiText.StringResource(Strings.error_unexpected)))
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 emit(Resource.Error(UiText.StringResource(Strings.error_unknown)))
             }
         }

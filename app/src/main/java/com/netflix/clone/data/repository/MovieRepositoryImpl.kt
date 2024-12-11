@@ -4,7 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.netflix.clone.data.remote.MovieApi
-import com.netflix.clone.data.remote.dto.list.ListsDto
+import com.netflix.clone.data.remote.dto.list.ListResult
 import com.netflix.clone.data.remote.dto.movie.MovieListsDto
 import com.netflix.clone.data.remote.dto.movie.MovieResult
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
@@ -17,6 +17,7 @@ import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
 import com.netflix.clone.data.remote.dto.trending.person.TrendingPersonDto
 import com.netflix.clone.data.remote.paging.AiringTodaySeriesPagingSource
+import com.netflix.clone.data.remote.paging.ListPagingSource
 import com.netflix.clone.data.remote.paging.NowPlayingMoviesPagingSource
 import com.netflix.clone.data.remote.paging.OnTheAirSeriesPagingSource
 import com.netflix.clone.data.remote.paging.PopularMoviesPagingSource
@@ -33,7 +34,17 @@ import kotlinx.coroutines.flow.Flow
 class MovieRepositoryImpl(
     private val movieApi: MovieApi,
 ) : MovieRepository {
-    override suspend fun getList(listId: Int): ListsDto = movieApi.getList(listId)
+    override suspend fun getList(
+        listId: Int,
+        language: String,
+        page: Int,
+    ): Flow<PagingData<ListResult>> =
+        Pager(
+            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
+            pagingSourceFactory = {
+                ListPagingSource(movieApi, listId, language, page)
+            },
+        ).flow
 
     override suspend fun getNowPlayingMovies(
         language: String,

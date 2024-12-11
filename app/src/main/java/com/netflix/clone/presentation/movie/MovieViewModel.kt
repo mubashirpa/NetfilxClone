@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.netflix.clone.domain.usecase.movie.GetMovieDetailsUseCase
+import com.netflix.clone.domain.usecase.GetMovieDetailsUseCase
 import com.netflix.clone.navigation.Screen
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
