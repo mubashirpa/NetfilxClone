@@ -355,7 +355,7 @@ fun Extra(
             }
         }
         when (state) {
-            0 -> Episodes(episodes = tvDetails.seasons.orEmpty())
+            0 -> Episodes(name = tvDetails.name.orEmpty(), episodes = tvDetails.seasons.orEmpty())
             1 -> Collection(collection = tvDetails.recommendations.orEmpty().take(9))
         }
     }
@@ -377,7 +377,10 @@ private fun FancyIndicator(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun Episodes(episodes: List<SeriesSeason>) {
+private fun Episodes(
+    name: String,
+    episodes: List<SeriesSeason>,
+) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(top = 12.dp),
@@ -408,7 +411,7 @@ private fun Episodes(episodes: List<SeriesSeason>) {
                 overview =
                     item.overview
                         .orEmpty()
-                        .ifEmpty { "${item.name} of Breaking Bad premiered on ${item.airDate}" },
+                        .ifEmpty { "${item.name} of $name premiered on ${item.airDate}" },
                 onClick = {},
             )
         }
