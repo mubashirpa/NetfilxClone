@@ -11,4 +11,8 @@ data class HomeUiState(
     val popularMoviesResource: Resource<List<MovieResultModel>> = Resource.Empty(),
     val trendingResource: Resource<List<TrendingResultModel>> = Resource.Empty(),
     val popularSeries: MutableStateFlow<PagingData<SeriesResultModel>> = MutableStateFlow(PagingData.empty()),
+    val topRatedSeries: MutableStateFlow<PagingData<SeriesResultModel>> =
+        MutableStateFlow(
+            PagingData.empty(),
+        ),
 )

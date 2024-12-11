@@ -210,14 +210,25 @@ fun HomeScreenContent(
 ) {
     Column(modifier = modifier.padding(vertical = 12.dp)) {
         MovieCard(
+            genres = listOf("Drama", "Thriller", "Crime"),
             posterPath = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjZ8ohCXR_9pNW208fEDguPU1-K3Uc5fAliCB_cX3CTo9CfYBhu2uCPQ1pTTQQpEYfrlYoGoj15j3LIhblnKhta4huY3QcDmZad4E3q-51rCjRTUNbpO_4WiVBilN97cnLSFQA7KZCzjtLJ3l6-XCfmPd5rKg_GnOGSGeAu6h7tb6v91QANtnijmbuQnCX3/s4096/MV5BMjEzN2ZjYjUtZTI3NC00MzMyLWJiNDAtMDBiZGEzNTBiY2RkXkEyXkFqcGc@._V1_.jpg",
             modifier = Modifier.padding(16.dp),
         )
-        PopularMovies(uiState = uiState, onItemClick = navigateToMovieScreen)
-        Trending(uiState = uiState, onItemClick = { /*TODO*/ })
+        PopularMovies(
+            uiState = uiState,
+            onItemClick = navigateToMovieScreen,
+        )
+        TopRatedSeries(
+            items = uiState.topRatedSeries.collectAsLazyPagingItems(),
+            onItemClick = navigateToTvScreen,
+        )
         PopularSeries(
             items = uiState.popularSeries.collectAsLazyPagingItems(),
-            onItemClick = navigateToTvScreen,
+            onItemClick = { /*TODO*/ },
+        )
+        Trending(
+            uiState = uiState,
+            onItemClick = { /*TODO*/ },
         )
     }
 }
@@ -259,14 +270,14 @@ private fun PopularMovies(
 }
 
 @Composable
-private fun PopularSeries(
+private fun TopRatedSeries(
     items: LazyPagingItems<SeriesResultModel>,
     onItemClick: (id: Int) -> Unit,
 ) {
     if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
         Column {
             Text(
-                text = "Popular TV Shows",
+                text = "Top Rated TV Shows",
                 modifier = Modifier.padding(horizontal = 16.dp).padding(top = 16.dp, bottom = 8.dp),
                 color = ExtendedTheme.colors.neutralWhite,
                 fontWeight = FontWeight.Bold,
@@ -287,6 +298,45 @@ private fun PopularSeries(
                                 onClick = { item.id?.let(onItemClick) },
                                 posterPath = item.posterPath,
                                 modifier = Modifier.width(100.dp),
+                            )
+                        }
+                    }
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun PopularSeries(
+    items: LazyPagingItems<SeriesResultModel>,
+    onItemClick: (id: Int) -> Unit,
+) {
+    if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
+        Column {
+            Text(
+                text = "Only on Netflix",
+                modifier = Modifier.padding(horizontal = 16.dp).padding(top = 16.dp, bottom = 8.dp),
+                color = ExtendedTheme.colors.neutralWhite,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                content = {
+                    items(
+                        count = items.itemCount,
+                        key = items.itemKey(),
+                        contentType = items.itemContentType(),
+                    ) { index ->
+                        items[index]?.let { item ->
+                            MovieListItem(
+                                onClick = { item.id?.let(onItemClick) },
+                                posterPath = item.posterPath,
+                                modifier = Modifier.width(150.dp),
+                                ratio = 9f / 16f,
                             )
                         }
                     }

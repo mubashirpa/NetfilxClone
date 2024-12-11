@@ -6,6 +6,7 @@ import com.netflix.clone.domain.usecase.movie.GetPopularMoviesUseCase
 import com.netflix.clone.domain.usecase.movie.GetUpcomingMoviesUseCase
 import com.netflix.clone.domain.usecase.series.GetPopularSeriesUseCase
 import com.netflix.clone.domain.usecase.series.GetSeriesDetailsUseCase
+import com.netflix.clone.domain.usecase.series.GetTopRatedSeriesUseCase
 import com.netflix.clone.domain.usecase.trending.GetTrendingUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -19,4 +20,5 @@ val useCaseModule =
         singleOf(::GetListUseCase)
         singleOf(::GetMovieDetailsUseCase)
         singleOf(::GetSeriesDetailsUseCase)
+        singleOf(::GetTopRatedSeriesUseCase)
     }

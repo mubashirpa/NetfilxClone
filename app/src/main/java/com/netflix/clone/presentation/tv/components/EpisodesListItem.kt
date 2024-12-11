@@ -86,14 +86,16 @@ fun EpisodesListItem(
             },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
         )
-        Text(
-            text = overview,
-            modifier = Modifier.padding(horizontal = 16.dp).padding(top = 4.dp, bottom = 12.dp),
-            color = ExtendedTheme.colors.neutralGrayLight2,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 3,
-            style = MaterialTheme.typography.bodySmall,
-        )
+        if (overview.isNotEmpty()) {
+            Text(
+                text = overview,
+                modifier = Modifier.padding(horizontal = 16.dp).padding(top = 4.dp, bottom = 12.dp),
+                color = ExtendedTheme.colors.neutralGrayLight2,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 3,
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
     }
 }
 

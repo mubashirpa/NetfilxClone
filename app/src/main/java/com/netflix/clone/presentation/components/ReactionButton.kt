@@ -39,11 +39,15 @@ fun ReactionButton(
         Icon(
             imageVector = icon,
             contentDescription = null,
+            modifier = Modifier.padding(top = 16.dp),
             tint = ExtendedTheme.colors.neutralWhite,
         )
         Text(
             text = label,
-            modifier = Modifier.padding(top = 4.dp).widthIn(max = 88.dp),
+            modifier =
+                Modifier
+                    .padding(top = 4.dp)
+                    .widthIn(max = 88.dp),
             color = ExtendedTheme.colors.neutralGrayLight2,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,

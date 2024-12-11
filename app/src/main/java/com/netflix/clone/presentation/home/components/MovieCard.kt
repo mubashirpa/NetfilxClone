@@ -2,6 +2,7 @@ package com.netflix.clone.presentation.home.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -31,6 +36,7 @@ import com.netflix.clone.ui.theme.NetflixCloneTheme
 
 @Composable
 fun MovieCard(
+    genres: List<String>,
     posterPath: String?,
     modifier: Modifier = Modifier,
 ) {
@@ -60,25 +66,43 @@ fun MovieCard(
                         .fillMaxSize()
                         .scrim(scrim),
             )
-            Row(
+            Column(
                 modifier =
                     Modifier
                         .padding(horizontal = 16.dp, vertical = 12.dp)
                         .align(Alignment.BottomCenter),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                PrimaryButtonSmall(
-                    text = stringResource(R.string.play),
-                    imageVector = Icons.Default.PlayArrow,
-                    modifier = Modifier.weight(1f),
+                Text(
+                    text =
+                        buildAnnotatedString {
+                            genres.forEachIndexed { i, t ->
+                                append(t)
+                                if (i != genres.lastIndex) {
+                                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                        append(" • ")
+                                    }
+                                }
+                            }
+                        },
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    color = ExtendedTheme.colors.neutralGrayLight3,
+                    style = MaterialTheme.typography.bodySmall,
                 )
-                PrimaryButtonSmall(
-                    text = stringResource(R.string.my_list),
-                    imageVector = Icons.Default.Add,
-                    modifier = Modifier.weight(1f),
-                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
-                    contentColor = ExtendedTheme.colors.neutralWhite,
-                )
+                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    PrimaryButtonSmall(
+                        text = stringResource(R.string.play),
+                        imageVector = Icons.Default.PlayArrow,
+                        modifier = Modifier.weight(1f),
+                    )
+                    PrimaryButtonSmall(
+                        text = stringResource(R.string.my_list),
+                        imageVector = Icons.Default.Add,
+                        modifier = Modifier.weight(1f),
+                        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f),
+                        contentColor = ExtendedTheme.colors.neutralWhite,
+                    )
+                }
             }
         }
     }
@@ -88,6 +112,6 @@ fun MovieCard(
 @Composable
 private fun MovieCardPreview() {
     NetflixCloneTheme {
-        MovieCard(posterPath = null)
+        MovieCard(genres = listOf("Drama", "Thriller", "Crime"), posterPath = null)
     }
 }

@@ -1,5 +1,6 @@
 package com.netflix.clone.presentation.home.components
 
+import androidx.annotation.FloatRange
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Card
@@ -19,6 +20,7 @@ fun MovieListItem(
     onClick: () -> Unit,
     posterPath: String?,
     modifier: Modifier = Modifier,
+    @FloatRange(from = 0.0, fromInclusive = false) ratio: Float = 2f / 3f,
 ) {
     Card(onClick = onClick, modifier = modifier) {
         AsyncImage(
@@ -32,7 +34,7 @@ fun MovieListItem(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .aspectRatio(2f / 3f),
+                    .aspectRatio(ratio),
             contentScale = ContentScale.FillBounds,
         )
     }

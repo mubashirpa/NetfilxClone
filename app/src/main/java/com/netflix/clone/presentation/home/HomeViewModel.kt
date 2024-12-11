@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.netflix.clone.domain.usecase.movie.GetPopularMoviesUseCase
 import com.netflix.clone.domain.usecase.series.GetPopularSeriesUseCase
+import com.netflix.clone.domain.usecase.series.GetTopRatedSeriesUseCase
 import com.netflix.clone.domain.usecase.trending.GetTrendingUseCase
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -19,6 +20,7 @@ class HomeViewModel(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
     private val getTrendingUseCase: GetTrendingUseCase,
     private val getPopularSeriesUseCase: GetPopularSeriesUseCase,
+    private val getTopRatedSeriesUseCase: GetTopRatedSeriesUseCase,
 ) : ViewModel() {
     var uiState by mutableStateOf(HomeUiState())
         private set
@@ -27,6 +29,7 @@ class HomeViewModel(
         getPopularMovies()
         getTrending()
         getPopularSeries()
+        getTopRatedSeries()
     }
 
     private fun getPopularMovies() {
@@ -51,6 +54,17 @@ class HomeViewModel(
                 .cachedIn(viewModelScope)
                 .collect {
                     uiState.popularSeries.value = it
+                }
+        }
+    }
+
+    private fun getTopRatedSeries() {
+        viewModelScope.launch {
+            getTopRatedSeriesUseCase()
+                .distinctUntilChanged()
+                .cachedIn(viewModelScope)
+                .collect {
+                    uiState.topRatedSeries.value = it
                 }
         }
     }
