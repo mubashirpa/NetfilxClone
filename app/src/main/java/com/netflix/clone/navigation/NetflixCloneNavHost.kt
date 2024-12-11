@@ -15,6 +15,8 @@ import com.netflix.clone.presentation.news.NewsAndHotScreen
 import com.netflix.clone.presentation.news.NewsAndHotViewModel
 import com.netflix.clone.presentation.profile.MyNetflixScreen
 import com.netflix.clone.presentation.profile.MyNetflixViewModel
+import com.netflix.clone.presentation.search.SearchScreen
+import com.netflix.clone.presentation.search.SearchViewModel
 import com.netflix.clone.presentation.tv.TvScreen
 import com.netflix.clone.presentation.tv.TvViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -39,6 +41,9 @@ fun NetflixCloneNavHost(
                 },
                 navigateToTvScreen = { id ->
                     navController.navigate(Screen.TvScreen(id))
+                },
+                navigateToSearchScreen = {
+                    navController.navigate(Screen.Search)
                 },
             )
         }
@@ -66,6 +71,15 @@ fun NetflixCloneNavHost(
         composable<Screen.TvScreen> {
             val viewModel = koinViewModel<TvViewModel>()
             TvScreen(
+                uiState = viewModel.uiState,
+                onNavigateUp = {
+                    navController.navigateUp()
+                },
+            )
+        }
+        composable<Screen.Search> {
+            val viewModel = koinViewModel<SearchViewModel>()
+            SearchScreen(
                 uiState = viewModel.uiState,
                 onNavigateUp = {
                     navController.navigateUp()

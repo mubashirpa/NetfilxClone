@@ -45,6 +45,7 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,6 +71,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     navigateToMovieScreen: (id: Int) -> Unit,
     navigateToTvScreen: (id: Int) -> Unit,
+    navigateToSearchScreen: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val appBarColors =
@@ -151,7 +153,7 @@ fun HomeScreen(
                                 contentDescription = null,
                             )
                         }
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = navigateToSearchScreen) {
                             Icon(
                                 imageVector = Icons.Default.Search,
                                 contentDescription = null,
@@ -183,7 +185,7 @@ fun HomeScreen(
                         FilterChip(
                             onClick = { /*TODO*/ },
                             label = {
-                                Text(text = "Categories")
+                                Text(text = stringResource(R.string.categories))
                             },
                             selected = false,
                             trailingIcon = {
@@ -242,8 +244,11 @@ private fun PopularMovies(
     if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
         Column {
             Text(
-                text = "Popular Movies",
-                modifier = Modifier.padding(horizontal = 16.dp).padding(top = 16.dp, bottom = 8.dp),
+                text = stringResource(R.string.popular_movies),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp, bottom = 8.dp),
                 color = ExtendedTheme.colors.neutralWhite,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium,
@@ -280,8 +285,11 @@ private fun TopRatedSeries(
     if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
         Column {
             Text(
-                text = "Top Rated TV Shows",
-                modifier = Modifier.padding(horizontal = 16.dp).padding(top = 16.dp, bottom = 8.dp),
+                text = stringResource(R.string.top_rated_tv_shows),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp, bottom = 8.dp),
                 color = ExtendedTheme.colors.neutralWhite,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium,
@@ -318,8 +326,11 @@ private fun PopularSeries(
     if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
         Column {
             Text(
-                text = "Only on Netflix",
-                modifier = Modifier.padding(horizontal = 16.dp).padding(top = 16.dp, bottom = 8.dp),
+                text = stringResource(R.string.only_on_netflix),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp, bottom = 8.dp),
                 color = ExtendedTheme.colors.neutralWhite,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium,
@@ -358,8 +369,11 @@ private fun Trending(
         val popularList = uiState.trendingResource.data.orEmpty()
         Column {
             Text(
-                text = "Today's Top Picks for You",
-                modifier = Modifier.padding(horizontal = 16.dp).padding(top = 16.dp, bottom = 8.dp),
+                text = stringResource(R.string.today_s_top_picks_for_you),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp, bottom = 8.dp),
                 color = ExtendedTheme.colors.neutralWhite,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium,
@@ -391,9 +405,13 @@ private fun HomeScreenPreview() {
     NetflixCloneTheme {
         HomeScreen(
             uiState = HomeUiState(),
-            modifier = Modifier.fillMaxSize().background(ExtendedTheme.colors.neutralBlack),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(ExtendedTheme.colors.neutralBlack),
             navigateToMovieScreen = {},
             navigateToTvScreen = {},
+            navigateToSearchScreen = {},
         )
     }
 }

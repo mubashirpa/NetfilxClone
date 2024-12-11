@@ -17,6 +17,9 @@ sealed class Screen {
     data object MyNetflix : Screen()
 
     @Serializable
+    data object Search : Screen()
+
+    @Serializable
     data class MovieScreen(
         val id: Int,
     ) : Screen()
