@@ -1,8 +1,11 @@
 package com.netflix.clone.data.repository
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.netflix.clone.data.local.database.NetflixDatabase
+import com.netflix.clone.data.local.entity.movie.MovieEntity
 import com.netflix.clone.data.remote.MovieApi
 import com.netflix.clone.data.remote.dto.list.ListResult
 import com.netflix.clone.data.remote.dto.movie.MovieListsDto
@@ -16,11 +19,11 @@ import com.netflix.clone.data.remote.dto.series.SeriesResult
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
 import com.netflix.clone.data.remote.dto.trending.person.TrendingPersonDto
+import com.netflix.clone.data.remote.mediator.PopularMoviesRemoteMediator
 import com.netflix.clone.data.remote.paging.AiringTodaySeriesPagingSource
 import com.netflix.clone.data.remote.paging.ListPagingSource
 import com.netflix.clone.data.remote.paging.NowPlayingMoviesPagingSource
 import com.netflix.clone.data.remote.paging.OnTheAirSeriesPagingSource
-import com.netflix.clone.data.remote.paging.PopularMoviesPagingSource
 import com.netflix.clone.data.remote.paging.PopularPersonPagingSource
 import com.netflix.clone.data.remote.paging.PopularSeriesPagingSource
 import com.netflix.clone.data.remote.paging.SearchMultiPagingSource
@@ -33,6 +36,7 @@ import kotlinx.coroutines.flow.Flow
 
 class MovieRepositoryImpl(
     private val movieApi: MovieApi,
+    private val database: NetflixDatabase,
 ) : MovieRepository {
     override suspend fun getList(
         listId: Int,
@@ -64,15 +68,24 @@ class MovieRepositoryImpl(
         region: String?,
     ): MovieListsDto = movieApi.getPopularMovies(language, page, region)
 
+    @OptIn(ExperimentalPagingApi::class)
     override suspend fun getPopularMoviesPaging(
         language: String,
         page: Int,
         region: String?,
-    ): Flow<PagingData<MovieResult>> =
+    ): Flow<PagingData<MovieEntity>> =
         Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
+            remoteMediator =
+                PopularMoviesRemoteMediator(
+                    movieApi,
+                    database,
+                    language,
+                    page,
+                    region,
+                ),
             pagingSourceFactory = {
-                PopularMoviesPagingSource(movieApi, language, page, region)
+                database.moviesDao().pagingSource()
             },
         ).flow
 

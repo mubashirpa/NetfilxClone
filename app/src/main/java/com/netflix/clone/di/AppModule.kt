@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val appModule =
     module {
-        includes(useCaseModule, viewModelModule)
+        includes(useCaseModule, viewModelModule, databaseModule)
         single<MovieApi> {
             Retrofit
                 .Builder()

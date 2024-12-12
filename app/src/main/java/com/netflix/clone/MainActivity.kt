@@ -16,12 +16,10 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.netflix.clone.di.appModule
 import com.netflix.clone.navigation.NetflixCloneNavHost
 import com.netflix.clone.presentation.components.NetflixNavigationBar
 import com.netflix.clone.ui.theme.ExtendedTheme
 import com.netflix.clone.ui.theme.NetflixCloneTheme
-import org.koin.compose.KoinApplication
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,25 +36,23 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             NetflixCloneTheme {
-                KoinApplication(application = { modules(appModule) }) {
-                    Scaffold(
-                        modifier = Modifier.fillMaxSize(),
-                        bottomBar = {
-                            NetflixNavigationBar(navController)
-                        },
-                        containerColor = ExtendedTheme.colors.neutralBlack,
-                        contentColor = ExtendedTheme.colors.neutralWhite,
-                        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal),
-                    ) { innerPadding ->
-                        NetflixCloneNavHost(
-                            navController = navController,
-                            modifier =
-                                Modifier
-                                    .fillMaxSize()
-                                    .padding(innerPadding)
-                                    .consumeWindowInsets(innerPadding),
-                        )
-                    }
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        NetflixNavigationBar(navController)
+                    },
+                    containerColor = ExtendedTheme.colors.neutralBlack,
+                    contentColor = ExtendedTheme.colors.neutralWhite,
+                    contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal),
+                ) { innerPadding ->
+                    NetflixCloneNavHost(
+                        navController = navController,
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .padding(innerPadding)
+                                .consumeWindowInsets(innerPadding),
+                    )
                 }
             }
         }
