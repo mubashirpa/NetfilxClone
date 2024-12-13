@@ -1,5 +1,8 @@
 package com.netflix.clone.data.remote.mapper
 
+import com.netflix.clone.data.local.entity.tv.PopularTvEntity
+import com.netflix.clone.data.local.entity.tv.TopRatedTvEntity
+import com.netflix.clone.data.local.entity.tv.TvEntity
 import com.netflix.clone.data.remote.dto.series.SeriesResult
 import com.netflix.clone.data.remote.dto.series.contentRating.ContentRating
 import com.netflix.clone.data.remote.dto.series.contentRating.ContentRatingResult
@@ -66,3 +69,49 @@ fun Cast.toSeriesCast(): SeriesCast = SeriesCast(character, id, name, profilePat
 fun Crew.toSeriesCrew(): SeriesCrew = SeriesCrew(id, job, name, profilePath)
 
 fun SeriesResult.toSeriesResultModel(): SeriesResultModel = SeriesResultModel(firstAirDate, id, name, posterPath, voteAverage)
+
+fun SeriesResult.toPopularTvEntity(): PopularTvEntity =
+    PopularTvEntity(
+        tv =
+            TvEntity(
+                firstAirDate = firstAirDate,
+                name = name,
+                posterPath = posterPath,
+                tvId = id,
+                voteAverage = voteAverage,
+            ),
+    )
+
+fun PopularTvEntity.toSeriesResultModel(): SeriesResultModel =
+    tv.let { tv ->
+        SeriesResultModel(
+            firstAirDate = tv.firstAirDate,
+            id = tv.tvId,
+            name = tv.name,
+            posterPath = tv.posterPath,
+            voteAverage = tv.voteAverage,
+        )
+    }
+
+fun SeriesResult.toTopRatedTvEntity(): TopRatedTvEntity =
+    TopRatedTvEntity(
+        tv =
+            TvEntity(
+                firstAirDate = firstAirDate,
+                name = name,
+                posterPath = posterPath,
+                tvId = id,
+                voteAverage = voteAverage,
+            ),
+    )
+
+fun TopRatedTvEntity.toSeriesResultModel(): SeriesResultModel =
+    tv.let { tv ->
+        SeriesResultModel(
+            firstAirDate = tv.firstAirDate,
+            id = tv.tvId,
+            name = tv.name,
+            posterPath = tv.posterPath,
+            voteAverage = tv.voteAverage,
+        )
+    }

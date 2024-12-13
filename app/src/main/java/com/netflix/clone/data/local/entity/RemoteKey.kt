@@ -1,4 +1,4 @@
-package com.netflix.clone.data.local.entity.movie
+package com.netflix.clone.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

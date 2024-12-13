@@ -3,7 +3,7 @@ package com.netflix.clone.data.local.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import com.netflix.clone.data.local.entity.movie.RemoteKey
+import com.netflix.clone.data.local.entity.RemoteKey
 
 @Dao
 interface RemoteKeyDao {

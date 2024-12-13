@@ -1,6 +1,7 @@
 package com.netflix.clone.data.remote.mapper
 
-import com.netflix.clone.data.local.entity.movie.MovieEntity
+import com.netflix.clone.data.local.entity.movies.MovieEntity
+import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
 import com.netflix.clone.data.remote.dto.movie.MovieResult
 import com.netflix.clone.data.remote.dto.movie.credits.Cast
 import com.netflix.clone.data.remote.dto.movie.credits.Crew
@@ -40,24 +41,29 @@ fun Crew.toMovieCrew(): MovieCrew = MovieCrew(id, job, name, profilePath)
 fun MovieResult.toMovieResultModel(): MovieResultModel =
     MovieResultModel(backdropPath, id, overview, posterPath, releaseDate, title, voteAverage)
 
-fun MovieResult.toMovieEntity(): MovieEntity =
-    MovieEntity(
-        backdropPath = backdropPath,
-        movieId = id,
-        overview = overview,
-        posterPath = posterPath,
-        releaseDate = releaseDate,
-        title = title,
-        voteAverage = voteAverage,
+fun MovieResult.toPopularMoviesEntity(): PopularMoviesEntity =
+    PopularMoviesEntity(
+        movie =
+            MovieEntity(
+                backdropPath = backdropPath,
+                movieId = id,
+                overview = overview,
+                posterPath = posterPath,
+                releaseDate = releaseDate,
+                title = title,
+                voteAverage = voteAverage,
+            ),
     )
 
-fun MovieEntity.toMovieResultModel(): MovieResultModel =
-    MovieResultModel(
-        backdropPath = backdropPath,
-        id = movieId,
-        overview = overview,
-        posterPath = posterPath,
-        releaseDate = releaseDate,
-        title = title,
-        voteAverage = voteAverage,
-    )
+fun PopularMoviesEntity.toMovieResultModel(): MovieResultModel =
+    movie.let { movie ->
+        MovieResultModel(
+            backdropPath = movie.backdropPath,
+            id = movie.movieId,
+            overview = movie.overview,
+            posterPath = movie.posterPath,
+            releaseDate = movie.releaseDate,
+            title = movie.title,
+            voteAverage = movie.voteAverage,
+        )
+    }

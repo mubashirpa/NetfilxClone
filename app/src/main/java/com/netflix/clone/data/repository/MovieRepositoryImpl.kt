@@ -5,7 +5,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.netflix.clone.data.local.database.NetflixDatabase
-import com.netflix.clone.data.local.entity.movie.MovieEntity
+import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
+import com.netflix.clone.data.local.entity.tv.PopularTvEntity
+import com.netflix.clone.data.local.entity.tv.TopRatedTvEntity
 import com.netflix.clone.data.remote.MovieApi
 import com.netflix.clone.data.remote.dto.list.ListResult
 import com.netflix.clone.data.remote.dto.movie.MovieListsDto
@@ -20,20 +22,21 @@ import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
 import com.netflix.clone.data.remote.dto.trending.person.TrendingPersonDto
 import com.netflix.clone.data.remote.mediator.PopularMoviesRemoteMediator
+import com.netflix.clone.data.remote.mediator.PopularTvRemoteMediator
+import com.netflix.clone.data.remote.mediator.TopRatedTvRemoteMediator
 import com.netflix.clone.data.remote.paging.AiringTodaySeriesPagingSource
 import com.netflix.clone.data.remote.paging.ListPagingSource
 import com.netflix.clone.data.remote.paging.NowPlayingMoviesPagingSource
 import com.netflix.clone.data.remote.paging.OnTheAirSeriesPagingSource
 import com.netflix.clone.data.remote.paging.PopularPersonPagingSource
-import com.netflix.clone.data.remote.paging.PopularSeriesPagingSource
 import com.netflix.clone.data.remote.paging.SearchMultiPagingSource
 import com.netflix.clone.data.remote.paging.TopRatedMoviesPagingSource
-import com.netflix.clone.data.remote.paging.TopRatedSeriesPagingSource
 import com.netflix.clone.data.remote.paging.UpcomingMoviesPagingSource
 import com.netflix.clone.domain.repository.MovieRepository
 import com.netflix.clone.domain.repository.TimeWindow
 import kotlinx.coroutines.flow.Flow
 
+@OptIn(ExperimentalPagingApi::class)
 class MovieRepositoryImpl(
     private val movieApi: MovieApi,
     private val database: NetflixDatabase,
@@ -68,17 +71,16 @@ class MovieRepositoryImpl(
         region: String?,
     ): MovieListsDto = movieApi.getPopularMovies(language, page, region)
 
-    @OptIn(ExperimentalPagingApi::class)
     override suspend fun getPopularMoviesPaging(
         language: String,
         page: Int,
         region: String?,
-    ): Flow<PagingData<MovieEntity>> =
+    ): Flow<PagingData<PopularMoviesEntity>> =
         Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
             remoteMediator =
                 PopularMoviesRemoteMediator(
-                    type = "popular",
+                    type = "popular_movie",
                     api = movieApi,
                     database = database,
                     language = language,
@@ -194,22 +196,38 @@ class MovieRepositoryImpl(
     override suspend fun getPopularSeries(
         language: String,
         page: Int,
-    ): Flow<PagingData<SeriesResult>> =
+    ): Flow<PagingData<PopularTvEntity>> =
         Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
+            remoteMediator =
+                PopularTvRemoteMediator(
+                    type = "popular_tv",
+                    api = movieApi,
+                    database = database,
+                    language = language,
+                    page = page,
+                ),
             pagingSourceFactory = {
-                PopularSeriesPagingSource(movieApi, language, page)
+                database.tvDao().popularPagingSource()
             },
         ).flow
 
     override suspend fun getTopRatedSeries(
         language: String,
         page: Int,
-    ): Flow<PagingData<SeriesResult>> =
+    ): Flow<PagingData<TopRatedTvEntity>> =
         Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
+            remoteMediator =
+                TopRatedTvRemoteMediator(
+                    type = "top_rated_tv",
+                    api = movieApi,
+                    database = database,
+                    language = language,
+                    page = page,
+                ),
             pagingSourceFactory = {
-                TopRatedSeriesPagingSource(movieApi, language, page)
+                database.tvDao().topRatedPagingSource()
             },
         ).flow
 

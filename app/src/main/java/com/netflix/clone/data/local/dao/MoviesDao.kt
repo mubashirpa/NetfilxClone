@@ -4,16 +4,16 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import com.netflix.clone.data.local.entity.movie.MovieEntity
+import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
 
 @Dao
 interface MoviesDao {
     @Upsert
-    suspend fun insertAll(movies: List<MovieEntity>)
+    suspend fun insertAll(movies: List<PopularMoviesEntity>)
 
-    @Query("SELECT * FROM movies ORDER BY id")
-    fun pagingSource(): PagingSource<Int, MovieEntity>
+    @Query("SELECT * FROM popular_movies ORDER BY id")
+    fun pagingSource(): PagingSource<Int, PopularMoviesEntity>
 
-    @Query("DELETE FROM movies")
+    @Query("DELETE FROM popular_movies")
     suspend fun clearAll()
 }

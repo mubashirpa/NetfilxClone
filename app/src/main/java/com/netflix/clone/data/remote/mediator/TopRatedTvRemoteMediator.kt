@@ -7,27 +7,26 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.netflix.clone.data.local.database.NetflixDatabase
 import com.netflix.clone.data.local.entity.RemoteKey
-import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
+import com.netflix.clone.data.local.entity.tv.TopRatedTvEntity
 import com.netflix.clone.data.remote.MovieApi
-import com.netflix.clone.data.remote.mapper.toPopularMoviesEntity
+import com.netflix.clone.data.remote.mapper.toTopRatedTvEntity
 import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
-class PopularMoviesRemoteMediator(
+class TopRatedTvRemoteMediator(
     private val type: String,
     private val api: MovieApi,
     private val database: NetflixDatabase,
     private val language: String,
     private val page: Int,
-    private val region: String?,
-) : RemoteMediator<Int, PopularMoviesEntity>() {
-    val moviesDao = database.moviesDao()
+) : RemoteMediator<Int, TopRatedTvEntity>() {
+    val tvDao = database.tvDao()
     val remoteKeyDao = database.remoteKeyDao()
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, PopularMoviesEntity>,
+        state: PagingState<Int, TopRatedTvEntity>,
     ): MediatorResult {
         return try {
             val loadKey =
@@ -53,17 +52,16 @@ class PopularMoviesRemoteMediator(
                 }
 
             val response =
-                api.getPopularMovies(
+                api.getTopRatedSeries(
                     language = language,
                     page = loadKey,
-                    region = region,
                 )
-            val movies = response.results?.map { it.toPopularMoviesEntity() }.orEmpty()
+            val tv = response.results?.map { it.toTopRatedTvEntity() }.orEmpty()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     remoteKeyDao.deleteByType(type)
-                    moviesDao.clearAll()
+                    tvDao.topRatedClearAll()
                 }
 
                 remoteKeyDao.insertOrReplace(
@@ -72,7 +70,7 @@ class PopularMoviesRemoteMediator(
                         nextKey = response.page?.plus(1),
                     ),
                 )
-                moviesDao.insertAll(movies)
+                tvDao.topRatedInsertAll(tv)
             }
 
             MediatorResult.Success(endOfPaginationReached = response.page == response.totalPages)

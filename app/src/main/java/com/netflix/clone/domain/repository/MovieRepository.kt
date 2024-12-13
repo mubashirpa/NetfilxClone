@@ -1,7 +1,9 @@
 package com.netflix.clone.domain.repository
 
 import androidx.paging.PagingData
-import com.netflix.clone.data.local.entity.movie.MovieEntity
+import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
+import com.netflix.clone.data.local.entity.tv.PopularTvEntity
+import com.netflix.clone.data.local.entity.tv.TopRatedTvEntity
 import com.netflix.clone.data.remote.dto.list.ListResult
 import com.netflix.clone.data.remote.dto.movie.MovieListsDto
 import com.netflix.clone.data.remote.dto.movie.MovieResult
@@ -43,7 +45,7 @@ interface MovieRepository {
         language: String = "en-US",
         page: Int = 1,
         region: String? = null,
-    ): Flow<PagingData<MovieEntity>>
+    ): Flow<PagingData<PopularMoviesEntity>>
 
     suspend fun getTopRatedMovies(
         language: String = "en-US",
@@ -125,12 +127,12 @@ interface MovieRepository {
     suspend fun getPopularSeries(
         language: String = "en-US",
         page: Int = 1,
-    ): Flow<PagingData<SeriesResult>>
+    ): Flow<PagingData<PopularTvEntity>>
 
     suspend fun getTopRatedSeries(
         language: String = "en-US",
         page: Int = 1,
-    ): Flow<PagingData<SeriesResult>>
+    ): Flow<PagingData<TopRatedTvEntity>>
 
     // TV Series
 

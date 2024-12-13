@@ -282,7 +282,7 @@ private fun TopRatedSeries(
     items: LazyPagingItems<SeriesResultModel>,
     onItemClick: (id: Int) -> Unit,
 ) {
-    if (items.itemCount > 0) {
+    if (items.loadState.refresh !is LoadState.Loading && items.itemCount > 0) {
         Column {
             Text(
                 text = stringResource(R.string.top_rated_tv_shows),
@@ -323,7 +323,7 @@ private fun PopularSeries(
     items: LazyPagingItems<SeriesResultModel>,
     onItemClick: (id: Int) -> Unit,
 ) {
-    if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
+    if (items.loadState.refresh !is LoadState.Loading && items.itemCount > 0) {
         Column {
             Text(
                 text = stringResource(R.string.only_on_netflix),
