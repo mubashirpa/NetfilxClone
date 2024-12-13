@@ -78,11 +78,12 @@ class MovieRepositoryImpl(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
             remoteMediator =
                 PopularMoviesRemoteMediator(
-                    movieApi,
-                    database,
-                    language,
-                    page,
-                    region,
+                    type = "popular",
+                    api = movieApi,
+                    database = database,
+                    language = language,
+                    page = page,
+                    region = region,
                 ),
             pagingSourceFactory = {
                 database.moviesDao().pagingSource()

@@ -199,7 +199,7 @@ private fun MovieContent(
                     movieDetails
                         .credits
                         ?.crew
-                        ?.first { it.job == "Director" }
+                        ?.firstOrNull { it.job == "Director" }
                         ?.name
                         .orEmpty(),
                 modifier = Modifier.padding(horizontal = 16.dp),

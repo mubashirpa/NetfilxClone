@@ -42,8 +42,8 @@ fun MovieResult.toMovieResultModel(): MovieResultModel =
 
 fun MovieResult.toMovieEntity(): MovieEntity =
     MovieEntity(
-        id = id!!,
         backdropPath = backdropPath,
+        movieId = id,
         overview = overview,
         posterPath = posterPath,
         releaseDate = releaseDate,
@@ -54,7 +54,7 @@ fun MovieResult.toMovieEntity(): MovieEntity =
 fun MovieEntity.toMovieResultModel(): MovieResultModel =
     MovieResultModel(
         backdropPath = backdropPath,
-        id = id,
+        id = movieId,
         overview = overview,
         posterPath = posterPath,
         releaseDate = releaseDate,

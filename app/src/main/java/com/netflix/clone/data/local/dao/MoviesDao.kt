@@ -11,7 +11,7 @@ interface MoviesDao {
     @Upsert
     suspend fun insertAll(movies: List<MovieEntity>)
 
-    @Query("SELECT * FROM movies")
+    @Query("SELECT * FROM movies ORDER BY id")
     fun pagingSource(): PagingSource<Int, MovieEntity>
 
     @Query("DELETE FROM movies")
