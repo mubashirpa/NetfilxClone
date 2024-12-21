@@ -1,6 +1,5 @@
 package com.netflix.clone.presentation.games
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,11 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.netflix.clone.R
 import com.netflix.clone.domain.model.Game
 import com.netflix.clone.presentation.games.components.GamesListItem
@@ -94,8 +93,8 @@ private fun GamesContent(
                     .padding(horizontal = 16.dp)
                     .aspectRatio(4f / 5f),
         ) {
-            Image(
-                painter = painterResource(R.drawable.games_banner),
+            AsyncImage(
+                model = "file:///android_asset/images/games_banner.jpg",
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds,
