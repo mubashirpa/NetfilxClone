@@ -31,8 +31,8 @@ import androidx.navigation.compose.rememberNavController
 import com.netflix.clone.R
 import com.netflix.clone.navigation.Screen
 import com.netflix.clone.navigation.topLevelRoutes
-import com.netflix.clone.ui.theme.ExtendedTheme
-import com.netflix.clone.ui.theme.NetflixCloneTheme
+import com.netflix.clone.presentation.theme.ExtendedTheme
+import com.netflix.clone.presentation.theme.NetflixCloneTheme
 
 @SuppressLint("RestrictedApi")
 @Composable

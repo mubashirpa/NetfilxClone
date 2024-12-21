@@ -36,7 +36,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.netflix.clone.R
 import com.netflix.clone.presentation.news.components.NewAndHotListItem
-import com.netflix.clone.ui.theme.ExtendedTheme
+import com.netflix.clone.presentation.theme.ExtendedTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

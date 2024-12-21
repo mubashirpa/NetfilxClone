@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import com.netflix.clone.R
 import com.netflix.clone.domain.model.Game
 import com.netflix.clone.presentation.games.components.GamesListItem
-import com.netflix.clone.ui.theme.ExtendedTheme
-import com.netflix.clone.ui.theme.NetflixCloneTheme
+import com.netflix.clone.presentation.theme.ExtendedTheme
+import com.netflix.clone.presentation.theme.NetflixCloneTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

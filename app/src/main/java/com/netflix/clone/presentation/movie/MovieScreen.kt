@@ -62,8 +62,8 @@ import com.netflix.clone.domain.model.movie.details.MovieDetails
 import com.netflix.clone.presentation.components.PrimaryButtonLarge
 import com.netflix.clone.presentation.components.ReactionButton
 import com.netflix.clone.presentation.home.components.MovieListItem
-import com.netflix.clone.ui.theme.ExtendedTheme
-import com.netflix.clone.ui.theme.NetflixCloneTheme
+import com.netflix.clone.presentation.theme.ExtendedTheme
+import com.netflix.clone.presentation.theme.NetflixCloneTheme
 import kotlin.collections.orEmpty
 import kotlin.collections.take
 

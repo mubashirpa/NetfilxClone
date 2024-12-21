@@ -1,4 +1,4 @@
-package com.netflix.clone.ui.theme
+package com.netflix.clone.presentation.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf

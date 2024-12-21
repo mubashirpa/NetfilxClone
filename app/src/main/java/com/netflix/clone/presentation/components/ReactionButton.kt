@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.netflix.clone.ui.theme.ExtendedTheme
+import com.netflix.clone.presentation.theme.ExtendedTheme
 
 @Composable
 fun ReactionButton(

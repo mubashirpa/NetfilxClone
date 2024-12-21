@@ -28,8 +28,8 @@ import coil3.request.crossfade
 import com.netflix.clone.R
 import com.netflix.clone.core.Constants
 import com.netflix.clone.presentation.components.PrimaryButtonSmall
-import com.netflix.clone.ui.theme.ExtendedTheme
-import com.netflix.clone.ui.theme.NetflixCloneTheme
+import com.netflix.clone.presentation.theme.ExtendedTheme
+import com.netflix.clone.presentation.theme.NetflixCloneTheme
 
 @Composable
 fun NewAndHotListItem(

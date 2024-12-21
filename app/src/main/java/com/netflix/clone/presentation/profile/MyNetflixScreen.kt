@@ -55,8 +55,8 @@ import com.netflix.clone.R
 import com.netflix.clone.domain.model.list.ListResultModel
 import com.netflix.clone.domain.model.movie.MovieResultModel
 import com.netflix.clone.presentation.home.components.MovieListItem
-import com.netflix.clone.ui.theme.ExtendedTheme
-import com.netflix.clone.ui.theme.NetflixCloneTheme
+import com.netflix.clone.presentation.theme.ExtendedTheme
+import com.netflix.clone.presentation.theme.NetflixCloneTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

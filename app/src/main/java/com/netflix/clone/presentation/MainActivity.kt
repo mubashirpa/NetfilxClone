@@ -1,4 +1,4 @@
-package com.netflix.clone
+package com.netflix.clone.presentation
 
 import android.graphics.Color
 import android.os.Bundle
@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.netflix.clone.navigation.NetflixCloneNavHost
 import com.netflix.clone.presentation.components.NetflixNavigationBar
-import com.netflix.clone.ui.theme.ExtendedTheme
-import com.netflix.clone.ui.theme.NetflixCloneTheme
+import com.netflix.clone.presentation.theme.ExtendedTheme
+import com.netflix.clone.presentation.theme.NetflixCloneTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
