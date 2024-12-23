@@ -56,7 +56,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.netflix.clone.R
 import com.netflix.clone.core.utils.Resource
-import com.netflix.clone.domain.model.movie.MovieResultModel
+import com.netflix.clone.domain.model.movie.Movie
 import com.netflix.clone.domain.model.series.SeriesResultModel
 import com.netflix.clone.presentation.home.components.MovieCard
 import com.netflix.clone.presentation.home.components.MovieListItem
@@ -238,7 +238,7 @@ fun HomeScreenContent(
 
 @Composable
 private fun PopularMovies(
-    items: LazyPagingItems<MovieResultModel>,
+    items: LazyPagingItems<Movie>,
     onItemClick: (id: Int) -> Unit,
 ) {
     if (items.loadState.refresh !is LoadState.Loading && items.itemCount > 0) {

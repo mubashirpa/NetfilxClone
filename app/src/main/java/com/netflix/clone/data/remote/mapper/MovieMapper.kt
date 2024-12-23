@@ -3,43 +3,37 @@ package com.netflix.clone.data.remote.mapper
 import com.netflix.clone.data.local.entity.movies.MovieEntity
 import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
 import com.netflix.clone.data.remote.dto.movie.MovieResult
-import com.netflix.clone.data.remote.dto.movie.credits.Cast
-import com.netflix.clone.data.remote.dto.movie.credits.Crew
-import com.netflix.clone.data.remote.dto.movie.credits.MovieCreditsDto
-import com.netflix.clone.data.remote.dto.movie.details.Genre
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
-import com.netflix.clone.domain.model.movie.MovieResultModel
-import com.netflix.clone.domain.model.movie.credits.MovieCast
-import com.netflix.clone.domain.model.movie.credits.MovieCredits
-import com.netflix.clone.domain.model.movie.credits.MovieCrew
-import com.netflix.clone.domain.model.movie.details.MovieDetails
-import com.netflix.clone.domain.model.movie.details.MovieGenre
+import com.netflix.clone.domain.model.movie.Movie
+import com.netflix.clone.domain.model.movie.MovieDetails
 
 fun MovieDetailsDto.toMovieDetails(): MovieDetails =
     MovieDetails(
-        backdropPath,
-        genres?.map { it.toMovieGenre() },
-        id,
-        overview,
-        posterPath,
-        releaseDate,
-        runtime,
-        title,
-        voteAverage,
-        credits?.toMovieCredits(),
-        recommendations?.results?.map { it.toMovieResultModel() },
+        backdropPath = backdropPath,
+        cast = credits?.cast?.joinToString(", ") { it.name.orEmpty() },
+        directors =
+            credits
+                ?.crew
+                ?.filter { it.job == "Director" }
+                ?.joinToString(", ") { it.name.orEmpty() },
+        genres = genres?.joinToString(", ") { it.name.orEmpty() },
+        id = id,
+        overview = overview,
+        posterPath = posterPath,
+        recommendations = recommendations?.results?.map { it.toMovie() },
+        releaseDate = releaseDate,
+        runtime = runtime,
+        title = title,
     )
 
-fun Genre.toMovieGenre(): MovieGenre = MovieGenre(name)
-
-fun MovieCreditsDto.toMovieCredits(): MovieCredits = MovieCredits(cast?.map { it.toMovieCast() }, crew?.map { it.toMovieCrew() })
-
-fun Cast.toMovieCast(): MovieCast = MovieCast(character, id, name, profilePath)
-
-fun Crew.toMovieCrew(): MovieCrew = MovieCrew(id, job, name, profilePath)
-
-fun MovieResult.toMovieResultModel(): MovieResultModel =
-    MovieResultModel(backdropPath, id, overview, posterPath, releaseDate, title, voteAverage)
+fun MovieResult.toMovie(): Movie =
+    Movie(
+        backdropPath = backdropPath,
+        id = id,
+        overview = overview,
+        posterPath = posterPath,
+        title = title,
+    )
 
 fun MovieResult.toPopularMoviesEntity(): PopularMoviesEntity =
     PopularMoviesEntity(
@@ -49,21 +43,17 @@ fun MovieResult.toPopularMoviesEntity(): PopularMoviesEntity =
                 movieId = id,
                 overview = overview,
                 posterPath = posterPath,
-                releaseDate = releaseDate,
                 title = title,
-                voteAverage = voteAverage,
             ),
     )
 
-fun PopularMoviesEntity.toMovieResultModel(): MovieResultModel =
+fun PopularMoviesEntity.toMovieResultModel(): Movie =
     movie.let { movie ->
-        MovieResultModel(
+        Movie(
             backdropPath = movie.backdropPath,
             id = movie.movieId,
             overview = movie.overview,
             posterPath = movie.posterPath,
-            releaseDate = movie.releaseDate,
             title = movie.title,
-            voteAverage = movie.voteAverage,
         )
     }

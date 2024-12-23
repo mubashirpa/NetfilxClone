@@ -57,8 +57,8 @@ import coil3.request.crossfade
 import com.netflix.clone.R
 import com.netflix.clone.core.Constants
 import com.netflix.clone.core.utils.Resource
-import com.netflix.clone.domain.model.movie.MovieResultModel
-import com.netflix.clone.domain.model.movie.details.MovieDetails
+import com.netflix.clone.domain.model.movie.Movie
+import com.netflix.clone.domain.model.movie.MovieDetails
 import com.netflix.clone.presentation.components.PrimaryButtonLarge
 import com.netflix.clone.presentation.components.ReactionButton
 import com.netflix.clone.presentation.home.components.MovieListItem
@@ -189,19 +189,8 @@ private fun MovieContent(
                 releaseDate = movieDetails.releaseDate.orEmpty().take(4),
                 runtime = movieDetails.runtime ?: 0,
                 overview = movieDetails.overview.orEmpty(),
-                casts =
-                    movieDetails
-                        .credits
-                        ?.cast
-                        ?.joinToString(", ") { it.name.orEmpty() }
-                        .orEmpty(),
-                director =
-                    movieDetails
-                        .credits
-                        ?.crew
-                        ?.firstOrNull { it.job == "Director" }
-                        ?.name
-                        .orEmpty(),
+                casts = movieDetails.cast.orEmpty(),
+                director = movieDetails.directors.orEmpty(),
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
             Reactions(modifier = Modifier.padding(vertical = 12.dp))
@@ -373,7 +362,7 @@ private fun FancyIndicator(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun Collection(collection: List<MovieResultModel>) {
+private fun Collection(collection: List<Movie>) {
     FlowRow(
         modifier =
             Modifier

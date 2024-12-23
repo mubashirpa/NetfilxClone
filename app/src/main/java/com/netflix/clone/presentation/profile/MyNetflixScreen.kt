@@ -53,7 +53,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.netflix.clone.R
 import com.netflix.clone.domain.model.list.ListResultModel
-import com.netflix.clone.domain.model.movie.MovieResultModel
+import com.netflix.clone.domain.model.movie.Movie
 import com.netflix.clone.presentation.home.components.MovieListItem
 import com.netflix.clone.presentation.theme.ExtendedTheme
 import com.netflix.clone.presentation.theme.NetflixCloneTheme
@@ -237,7 +237,7 @@ private fun MyList(
 @Composable
 private fun NowPlayingMovies(
     onItemClick: (id: Int) -> Unit,
-    items: LazyPagingItems<MovieResultModel>,
+    items: LazyPagingItems<Movie>,
     modifier: Modifier = Modifier,
 ) {
     if (items.loadState.refresh is LoadState.NotLoading && items.itemCount > 0) {
