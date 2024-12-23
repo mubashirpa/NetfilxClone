@@ -8,8 +8,6 @@ import com.netflix.clone.data.remote.dto.list.ListResult
 import com.netflix.clone.data.remote.dto.movie.MovieListsDto
 import com.netflix.clone.data.remote.dto.movie.MovieResult
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
-import com.netflix.clone.data.remote.dto.person.details.PersonDetailsDto
-import com.netflix.clone.data.remote.dto.person.popular.PersonResult
 import com.netflix.clone.data.remote.dto.series.SeriesResult
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
@@ -64,21 +62,6 @@ interface MovieRepository {
         appendToResponse: String? = null,
         language: String = "en-US",
     ): MovieDetailsDto
-
-    // People Lists
-
-    suspend fun getPopularPerson(
-        language: String = "en-US",
-        page: Int = 1,
-    ): Flow<PagingData<PersonResult>>
-
-    // People
-
-    suspend fun getPersonDetails(
-        personId: Int,
-        appendToResponse: String? = null,
-        language: String = "en-US",
-    ): PersonDetailsDto
 
     // Trending
 

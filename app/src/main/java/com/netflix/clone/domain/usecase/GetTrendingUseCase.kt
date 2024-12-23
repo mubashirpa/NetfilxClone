@@ -2,8 +2,8 @@ package com.netflix.clone.domain.usecase
 
 import com.netflix.clone.core.utils.Resource
 import com.netflix.clone.core.utils.UiText
-import com.netflix.clone.data.remote.mapper.toTrendingResultModel
-import com.netflix.clone.domain.model.trending.TrendingResultModel
+import com.netflix.clone.data.remote.mapper.toTrending
+import com.netflix.clone.domain.model.trending.Trending
 import com.netflix.clone.domain.repository.MovieRepository
 import com.netflix.clone.domain.repository.TimeWindow
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +18,7 @@ class GetTrendingUseCase(
     operator fun invoke(
         timeWindow: TimeWindow = TimeWindow.DAY,
         language: String = "en-US",
-    ): Flow<Resource<List<TrendingResultModel>>> =
+    ): Flow<Resource<List<Trending>>> =
         flow {
             try {
                 emit(Resource.Loading())
@@ -28,7 +28,7 @@ class GetTrendingUseCase(
                             timeWindow,
                             language,
                         ).results
-                        ?.map { it.toTrendingResultModel() }
+                        ?.map { it.toTrending() }
                 emit(Resource.Success(results))
             } catch (_: IOException) {
                 emit(Resource.Error(UiText.StringResource(Strings.error_no_internet)))

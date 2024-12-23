@@ -13,8 +13,6 @@ import com.netflix.clone.data.remote.dto.list.ListResult
 import com.netflix.clone.data.remote.dto.movie.MovieListsDto
 import com.netflix.clone.data.remote.dto.movie.MovieResult
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
-import com.netflix.clone.data.remote.dto.person.details.PersonDetailsDto
-import com.netflix.clone.data.remote.dto.person.popular.PersonResult
 import com.netflix.clone.data.remote.dto.series.SeriesResult
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
@@ -26,7 +24,6 @@ import com.netflix.clone.data.remote.paging.AiringTodaySeriesPagingSource
 import com.netflix.clone.data.remote.paging.ListPagingSource
 import com.netflix.clone.data.remote.paging.NowPlayingMoviesPagingSource
 import com.netflix.clone.data.remote.paging.OnTheAirSeriesPagingSource
-import com.netflix.clone.data.remote.paging.PopularPersonPagingSource
 import com.netflix.clone.data.remote.paging.TopRatedMoviesPagingSource
 import com.netflix.clone.data.remote.paging.UpcomingMoviesPagingSource
 import com.netflix.clone.domain.repository.MovieRepository
@@ -118,23 +115,6 @@ class MovieRepositoryImpl(
         appendToResponse: String?,
         language: String,
     ): MovieDetailsDto = movieApi.getMovieDetails(movieId, appendToResponse, language)
-
-    override suspend fun getPopularPerson(
-        language: String,
-        page: Int,
-    ): Flow<PagingData<PersonResult>> =
-        Pager(
-            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
-            pagingSourceFactory = {
-                PopularPersonPagingSource(movieApi, language, page)
-            },
-        ).flow
-
-    override suspend fun getPersonDetails(
-        personId: Int,
-        appendToResponse: String?,
-        language: String,
-    ): PersonDetailsDto = movieApi.getPersonDetails(personId, appendToResponse, language)
 
     override suspend fun getTrending(
         timeWindow: TimeWindow,

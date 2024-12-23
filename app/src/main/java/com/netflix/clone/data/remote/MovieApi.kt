@@ -5,8 +5,6 @@ import com.netflix.clone.data.remote.dto.list.ListsDto
 import com.netflix.clone.data.remote.dto.movie.MovieListsDto
 import com.netflix.clone.data.remote.dto.movie.MovieListsRangeDto
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
-import com.netflix.clone.data.remote.dto.person.details.PersonDetailsDto
-import com.netflix.clone.data.remote.dto.person.popular.PopularPersonDto
 import com.netflix.clone.data.remote.dto.series.SeriesListsDto
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
@@ -104,37 +102,6 @@ interface MovieApi {
         @Query("append_to_response") appendToResponse: String? = null,
         @Query("language") language: String = "en-US",
     ): MovieDetailsDto
-
-    // People Lists
-
-    /**
-     * Get a list of people ordered by popularity.
-     */
-    @Headers(
-        "accept: application/json",
-        "Authorization: Bearer ${BuildConfig.TMDB_API_TOKEN}",
-    )
-    @GET("3/person/popular")
-    suspend fun getPopularPerson(
-        @Query("language") language: String = "en-US",
-        @Query("page") page: Int = 1,
-    ): PopularPersonDto
-
-    // People
-
-    /**
-     * Query the top level details of a person.
-     */
-    @Headers(
-        "accept: application/json",
-        "Authorization: Bearer ${BuildConfig.TMDB_API_TOKEN}",
-    )
-    @GET("3/person/{person_id}")
-    suspend fun getPersonDetails(
-        @Path("person_id") personId: Int,
-        @Query("append_to_response") appendToResponse: String? = null,
-        @Query("language") language: String = "en-US",
-    ): PersonDetailsDto
 
     // Trending
 

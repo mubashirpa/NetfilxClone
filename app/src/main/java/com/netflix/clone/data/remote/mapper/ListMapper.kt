@@ -1,6 +1,11 @@
 package com.netflix.clone.data.remote.mapper
 
 import com.netflix.clone.data.remote.dto.list.ListResult
-import com.netflix.clone.domain.model.list.ListResultModel
+import com.netflix.clone.domain.model.list.UserList
 
-fun ListResult.toListResultModel(): ListResultModel = ListResultModel(id, mediaType, posterPath)
+fun ListResult.toUserList(): UserList =
+    UserList(
+        id = id,
+        mediaType = mediaType,
+        posterPath = posterPath,
+    )

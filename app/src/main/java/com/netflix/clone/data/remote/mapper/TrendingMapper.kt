@@ -1,17 +1,14 @@
 package com.netflix.clone.data.remote.mapper
 
 import com.netflix.clone.data.remote.dto.trending.TrendingResult
-import com.netflix.clone.domain.model.trending.TrendingResultModel
+import com.netflix.clone.domain.model.trending.Trending
 
-fun TrendingResult.toTrendingResultModel(): TrendingResultModel =
-    TrendingResultModel(
-        backdropPath,
-        firstAirDate,
-        id,
-        mediaType,
-        name,
-        posterPath,
-        releaseDate,
-        title,
-        voteAverage,
+fun TrendingResult.toTrending(): Trending =
+    Trending(
+        backdropPath = backdropPath,
+        id = id,
+        mediaType = mediaType,
+        name = name,
+        posterPath = posterPath,
+        title = title,
     )
