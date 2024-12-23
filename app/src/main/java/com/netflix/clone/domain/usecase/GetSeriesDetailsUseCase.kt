@@ -3,7 +3,7 @@ package com.netflix.clone.domain.usecase
 import com.netflix.clone.core.utils.Resource
 import com.netflix.clone.core.utils.UiText
 import com.netflix.clone.data.remote.mapper.toSeriesDetails
-import com.netflix.clone.domain.model.series.details.SeriesDetails
+import com.netflix.clone.domain.model.series.SeriesDetails
 import com.netflix.clone.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

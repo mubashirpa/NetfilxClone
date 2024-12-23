@@ -7,7 +7,6 @@ import com.netflix.clone.data.remote.dto.movie.MovieListsRangeDto
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
 import com.netflix.clone.data.remote.dto.person.details.PersonDetailsDto
 import com.netflix.clone.data.remote.dto.person.popular.PopularPersonDto
-import com.netflix.clone.data.remote.dto.search.SearchDto
 import com.netflix.clone.data.remote.dto.series.SeriesListsDto
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
@@ -136,20 +135,6 @@ interface MovieApi {
         @Query("append_to_response") appendToResponse: String? = null,
         @Query("language") language: String = "en-US",
     ): PersonDetailsDto
-
-    // Search
-
-    @Headers(
-        "accept: application/json",
-        "Authorization: Bearer ${BuildConfig.TMDB_API_TOKEN}",
-    )
-    @GET("3/search/multi")
-    suspend fun searchMulti(
-        @Query("query") query: String,
-        @Query("include_adult") includeAdult: Boolean = false,
-        @Query("language") language: String = "en-US",
-        @Query("page") page: Int = 1,
-    ): SearchDto
 
     // Trending
 

@@ -1,4 +1,4 @@
-package com.netflix.clone.domain.model.series.details
+package com.netflix.clone.domain.model.series
 
 data class SeriesSeason(
     val airDate: String? = null,
@@ -7,6 +7,4 @@ data class SeriesSeason(
     val name: String? = null,
     val overview: String? = null,
     val posterPath: String? = null,
-    val seasonNumber: Int? = null,
-    val voteAverage: Double? = null,
 )

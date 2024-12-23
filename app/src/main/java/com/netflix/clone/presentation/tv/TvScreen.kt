@@ -65,9 +65,9 @@ import coil3.request.crossfade
 import com.netflix.clone.R
 import com.netflix.clone.core.Constants
 import com.netflix.clone.core.utils.Resource
-import com.netflix.clone.domain.model.series.SeriesResultModel
-import com.netflix.clone.domain.model.series.details.SeriesDetails
-import com.netflix.clone.domain.model.series.details.SeriesSeason
+import com.netflix.clone.domain.model.series.Series
+import com.netflix.clone.domain.model.series.SeriesDetails
+import com.netflix.clone.domain.model.series.SeriesSeason
 import com.netflix.clone.presentation.components.PrimaryButtonLarge
 import com.netflix.clone.presentation.components.ReactionButton
 import com.netflix.clone.presentation.home.components.MovieListItem
@@ -199,17 +199,8 @@ private fun TvContent(
                 year = tvDetails.firstAirDate.orEmpty().take(4),
                 seasons = tvDetails.numberOfSeasons ?: 0,
                 overview = tvDetails.overview.orEmpty(),
-                starring =
-                    tvDetails
-                        .credits
-                        ?.cast
-                        ?.joinToString(", ") { it.name.orEmpty() }
-                        .orEmpty(),
-                creators =
-                    tvDetails
-                        .createdBy
-                        ?.joinToString(", ") { it.name.orEmpty() }
-                        .orEmpty(),
+                starring = tvDetails.casts.orEmpty(),
+                creators = tvDetails.createdBy.orEmpty(),
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
             Reactions(modifier = Modifier.padding(vertical = 12.dp))
@@ -420,7 +411,7 @@ private fun Episodes(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun Collection(collection: List<SeriesResultModel>) {
+private fun Collection(collection: List<Series>) {
     FlowRow(
         modifier =
             Modifier

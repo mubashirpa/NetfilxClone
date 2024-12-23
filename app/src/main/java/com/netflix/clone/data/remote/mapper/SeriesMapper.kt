@@ -1,117 +1,87 @@
 package com.netflix.clone.data.remote.mapper
 
-import com.netflix.clone.data.local.entity.tv.PopularTvEntity
-import com.netflix.clone.data.local.entity.tv.TopRatedTvEntity
-import com.netflix.clone.data.local.entity.tv.TvEntity
+import com.netflix.clone.data.local.entity.series.PopularSeriesEntity
+import com.netflix.clone.data.local.entity.series.SeriesEntity
+import com.netflix.clone.data.local.entity.series.TopRatedSeriesEntity
 import com.netflix.clone.data.remote.dto.series.SeriesResult
-import com.netflix.clone.data.remote.dto.series.contentRating.ContentRating
-import com.netflix.clone.data.remote.dto.series.contentRating.ContentRatingResult
-import com.netflix.clone.data.remote.dto.series.credits.Cast
-import com.netflix.clone.data.remote.dto.series.credits.Crew
-import com.netflix.clone.data.remote.dto.series.credits.SeriesCreditsDto
-import com.netflix.clone.data.remote.dto.series.details.CreatedBy
-import com.netflix.clone.data.remote.dto.series.details.Genre
 import com.netflix.clone.data.remote.dto.series.details.Season
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
-import com.netflix.clone.domain.model.series.SeriesResultModel
-import com.netflix.clone.domain.model.series.contentRating.ContentRatingModel
-import com.netflix.clone.domain.model.series.contentRating.ContentRatingResultModel
-import com.netflix.clone.domain.model.series.credits.SeriesCast
-import com.netflix.clone.domain.model.series.credits.SeriesCredits
-import com.netflix.clone.domain.model.series.credits.SeriesCrew
-import com.netflix.clone.domain.model.series.details.SeriesCreatedBy
-import com.netflix.clone.domain.model.series.details.SeriesDetails
-import com.netflix.clone.domain.model.series.details.SeriesGenre
-import com.netflix.clone.domain.model.series.details.SeriesSeason
+import com.netflix.clone.domain.model.series.Series
+import com.netflix.clone.domain.model.series.SeriesDetails
+import com.netflix.clone.domain.model.series.SeriesSeason
 
 fun SeriesDetailsDto.toSeriesDetails(): SeriesDetails =
     SeriesDetails(
-        backdropPath,
-        createdBy?.map { it.toSeriesCreatedBy() },
-        firstAirDate,
-        genres?.map { it.toSeriesGenre() },
-        id,
-        name,
-        numberOfEpisodes,
-        numberOfSeasons,
-        overview,
-        seasons?.map { it.toSeriesSeason() },
-        voteAverage,
-        contentRatings?.toContentRatingModel(),
-        credits?.toSeriesCredits(),
-        recommendations?.results?.map { it.toSeriesResultModel() },
+        backdropPath = backdropPath,
+        casts = credits?.cast?.joinToString(", ") { it.name.orEmpty() },
+        createdBy = createdBy?.joinToString(", ") { it.name.orEmpty() },
+        firstAirDate = firstAirDate,
+        genres = genres?.joinToString(", ") { it.name.orEmpty() },
+        id = id,
+        name = name,
+        numberOfSeasons = numberOfSeasons,
+        overview = overview,
+        recommendations = recommendations?.results?.map { it.toSeries() },
+        seasons = seasons?.map { it.toSeriesSeason() },
     )
-
-fun CreatedBy.toSeriesCreatedBy(): SeriesCreatedBy = SeriesCreatedBy(name)
-
-fun Genre.toSeriesGenre(): SeriesGenre = SeriesGenre(name)
 
 fun Season.toSeriesSeason(): SeriesSeason =
     SeriesSeason(
-        airDate,
-        episodeCount,
-        id,
-        name,
-        overview,
-        posterPath,
-        seasonNumber,
-        voteAverage,
+        airDate = airDate,
+        episodeCount = episodeCount,
+        id = id,
+        name = name,
+        overview = overview,
+        posterPath = posterPath,
     )
 
-fun ContentRating.toContentRatingModel(): ContentRatingModel = ContentRatingModel(results?.map { it.toContentRatingResultModel() })
+fun SeriesResult.toSeries(): Series =
+    Series(
+        firstAirDate = firstAirDate,
+        id = id,
+        name = name,
+        posterPath = posterPath,
+        voteAverage = voteAverage,
+    )
 
-fun ContentRatingResult.toContentRatingResultModel(): ContentRatingResultModel = ContentRatingResultModel(iso31661, rating)
-
-fun SeriesCreditsDto.toSeriesCredits(): SeriesCredits = SeriesCredits(cast?.map { it.toSeriesCast() }, crew?.map { it.toSeriesCrew() })
-
-fun Cast.toSeriesCast(): SeriesCast = SeriesCast(character, id, name, profilePath)
-
-fun Crew.toSeriesCrew(): SeriesCrew = SeriesCrew(id, job, name, profilePath)
-
-fun SeriesResult.toSeriesResultModel(): SeriesResultModel = SeriesResultModel(firstAirDate, id, name, posterPath, voteAverage)
-
-fun SeriesResult.toPopularTvEntity(): PopularTvEntity =
-    PopularTvEntity(
-        tv =
-            TvEntity(
+fun SeriesResult.toPopularSeriesEntity(): PopularSeriesEntity =
+    PopularSeriesEntity(
+        series =
+            SeriesEntity(
                 firstAirDate = firstAirDate,
                 name = name,
                 posterPath = posterPath,
-                tvId = id,
+                seriesId = id,
                 voteAverage = voteAverage,
             ),
     )
 
-fun PopularTvEntity.toSeriesResultModel(): SeriesResultModel =
-    tv.let { tv ->
-        SeriesResultModel(
-            firstAirDate = tv.firstAirDate,
-            id = tv.tvId,
-            name = tv.name,
-            posterPath = tv.posterPath,
-            voteAverage = tv.voteAverage,
-        )
-    }
+fun PopularSeriesEntity.toSeries(): Series =
+    Series(
+        firstAirDate = series.firstAirDate,
+        id = series.seriesId,
+        name = series.name,
+        posterPath = series.posterPath,
+        voteAverage = series.voteAverage,
+    )
 
-fun SeriesResult.toTopRatedTvEntity(): TopRatedTvEntity =
-    TopRatedTvEntity(
-        tv =
-            TvEntity(
+fun SeriesResult.toTopRatedSeriesEntity(): TopRatedSeriesEntity =
+    TopRatedSeriesEntity(
+        series =
+            SeriesEntity(
                 firstAirDate = firstAirDate,
                 name = name,
                 posterPath = posterPath,
-                tvId = id,
+                seriesId = id,
                 voteAverage = voteAverage,
             ),
     )
 
-fun TopRatedTvEntity.toSeriesResultModel(): SeriesResultModel =
-    tv.let { tv ->
-        SeriesResultModel(
-            firstAirDate = tv.firstAirDate,
-            id = tv.tvId,
-            name = tv.name,
-            posterPath = tv.posterPath,
-            voteAverage = tv.voteAverage,
-        )
-    }
+fun TopRatedSeriesEntity.toSeries(): Series =
+    Series(
+        firstAirDate = series.firstAirDate,
+        id = series.seriesId,
+        name = series.name,
+        posterPath = series.posterPath,
+        voteAverage = series.voteAverage,
+    )

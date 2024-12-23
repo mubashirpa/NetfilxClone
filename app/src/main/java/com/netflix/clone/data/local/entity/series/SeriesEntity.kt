@@ -1,9 +1,9 @@
-package com.netflix.clone.domain.model.series
+package com.netflix.clone.data.local.entity.series
 
-data class SeriesResultModel(
+data class SeriesEntity(
     val firstAirDate: String? = null,
-    val id: Int? = null,
     val name: String? = null,
     val posterPath: String? = null,
+    val seriesId: Int? = null,
     val voteAverage: Double? = null,
 )

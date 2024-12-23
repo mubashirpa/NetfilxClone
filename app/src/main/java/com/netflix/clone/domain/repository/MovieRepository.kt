@@ -2,16 +2,14 @@ package com.netflix.clone.domain.repository
 
 import androidx.paging.PagingData
 import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
-import com.netflix.clone.data.local.entity.tv.PopularTvEntity
-import com.netflix.clone.data.local.entity.tv.TopRatedTvEntity
+import com.netflix.clone.data.local.entity.series.PopularSeriesEntity
+import com.netflix.clone.data.local.entity.series.TopRatedSeriesEntity
 import com.netflix.clone.data.remote.dto.list.ListResult
 import com.netflix.clone.data.remote.dto.movie.MovieListsDto
 import com.netflix.clone.data.remote.dto.movie.MovieResult
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
 import com.netflix.clone.data.remote.dto.person.details.PersonDetailsDto
 import com.netflix.clone.data.remote.dto.person.popular.PersonResult
-import com.netflix.clone.data.remote.dto.search.SearchDto
-import com.netflix.clone.data.remote.dto.search.SearchResult
 import com.netflix.clone.data.remote.dto.series.SeriesResult
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
@@ -82,22 +80,6 @@ interface MovieRepository {
         language: String = "en-US",
     ): PersonDetailsDto
 
-    // Search
-
-    suspend fun searchMulti(
-        query: String,
-        includeAdult: Boolean = false,
-        language: String = "en-US",
-        page: Int = 1,
-    ): SearchDto
-
-    suspend fun searchMultiPaging(
-        query: String,
-        includeAdult: Boolean = false,
-        language: String = "en-US",
-        page: Int = 1,
-    ): Flow<PagingData<SearchResult>>
-
     // Trending
 
     suspend fun getTrending(
@@ -127,12 +109,12 @@ interface MovieRepository {
     suspend fun getPopularSeries(
         language: String = "en-US",
         page: Int = 1,
-    ): Flow<PagingData<PopularTvEntity>>
+    ): Flow<PagingData<PopularSeriesEntity>>
 
     suspend fun getTopRatedSeries(
         language: String = "en-US",
         page: Int = 1,
-    ): Flow<PagingData<TopRatedTvEntity>>
+    ): Flow<PagingData<TopRatedSeriesEntity>>
 
     // TV Series
 

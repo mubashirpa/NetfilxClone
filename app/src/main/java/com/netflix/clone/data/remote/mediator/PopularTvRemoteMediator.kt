@@ -7,9 +7,9 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.netflix.clone.data.local.database.NetflixDatabase
 import com.netflix.clone.data.local.entity.RemoteKey
-import com.netflix.clone.data.local.entity.tv.PopularTvEntity
+import com.netflix.clone.data.local.entity.series.PopularSeriesEntity
 import com.netflix.clone.data.remote.MovieApi
-import com.netflix.clone.data.remote.mapper.toPopularTvEntity
+import com.netflix.clone.data.remote.mapper.toPopularSeriesEntity
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -20,13 +20,13 @@ class PopularTvRemoteMediator(
     private val database: NetflixDatabase,
     private val language: String,
     private val page: Int,
-) : RemoteMediator<Int, PopularTvEntity>() {
-    val tvDao = database.tvDao()
+) : RemoteMediator<Int, PopularSeriesEntity>() {
+    val seriesDao = database.seriesDao()
     val remoteKeyDao = database.remoteKeyDao()
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, PopularTvEntity>,
+        state: PagingState<Int, PopularSeriesEntity>,
     ): MediatorResult {
         return try {
             val loadKey =
@@ -56,12 +56,12 @@ class PopularTvRemoteMediator(
                     language = language,
                     page = loadKey,
                 )
-            val tv = response.results?.map { it.toPopularTvEntity() }.orEmpty()
+            val tv = response.results?.map { it.toPopularSeriesEntity() }.orEmpty()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     remoteKeyDao.deleteByType(type)
-                    tvDao.popularClearAll()
+                    seriesDao.popularClearAll()
                 }
 
                 remoteKeyDao.insertOrReplace(
@@ -70,7 +70,7 @@ class PopularTvRemoteMediator(
                         nextKey = response.page?.plus(1),
                     ),
                 )
-                tvDao.popularInsertAll(tv)
+                seriesDao.popularInsertAll(tv)
             }
 
             MediatorResult.Success(endOfPaginationReached = response.page == response.totalPages)
