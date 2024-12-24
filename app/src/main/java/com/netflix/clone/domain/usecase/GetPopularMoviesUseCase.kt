@@ -16,7 +16,7 @@ class GetPopularMoviesUseCase(
         page: Int = 1,
         region: String? = null,
     ): Flow<PagingData<Movie>> =
-        movieRepository.getPopularMoviesPaging(language, page, region).map { pagingData ->
+        movieRepository.getPopularMovies(language, page, region).map { pagingData ->
             pagingData.map {
                 it.toMovieResultModel()
             }

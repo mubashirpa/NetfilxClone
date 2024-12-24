@@ -8,7 +8,6 @@ import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
 import com.netflix.clone.data.remote.dto.series.SeriesListsDto
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
-import com.netflix.clone.data.remote.dto.trending.person.TrendingPersonDto
 import com.netflix.clone.domain.repository.TimeWindow
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -60,20 +59,6 @@ interface MovieApi {
     ): MovieListsDto
 
     /**
-     * Get a list of movies ordered by rating.
-     */
-    @Headers(
-        "accept: application/json",
-        "Authorization: Bearer ${BuildConfig.TMDB_API_TOKEN}",
-    )
-    @GET("3/movie/top_rated")
-    suspend fun getTopRatedMovies(
-        @Query("language") language: String = "en-US",
-        @Query("page") page: Int = 1,
-        @Query("region") region: String? = null,
-    ): MovieListsDto
-
-    /**
      * Get a list of movies that are being released soon.
      */
     @Headers(
@@ -118,48 +103,7 @@ interface MovieApi {
         @Query("language") language: String = "en-US",
     ): TrendingDto
 
-    /**
-     * Get the trending people on TMDB
-     */
-    @Headers(
-        "accept: application/json",
-        "Authorization: Bearer ${BuildConfig.TMDB_API_TOKEN}",
-    )
-    @GET("3/trending/person/{time_window}")
-    suspend fun getTrendingPerson(
-        @Path("time_window") timeWindow: String = TimeWindow.DAY.name.lowercase(),
-        @Query("language") language: String = "en-US",
-    ): TrendingPersonDto
-
     // TV Series Lists
-
-    /**
-     * Get a list of TV shows airing today.
-     */
-    @Headers(
-        "accept: application/json",
-        "Authorization: Bearer ${BuildConfig.TMDB_API_TOKEN}",
-    )
-    @GET("3/tv/airing_today")
-    suspend fun getAiringTodaySeries(
-        @Query("language") language: String = "en-US",
-        @Query("page") page: Int = 1,
-        @Query("timezone") timezone: String? = null,
-    ): SeriesListsDto
-
-    /**
-     * Get a list of TV shows that air in the next 7 days.
-     */
-    @Headers(
-        "accept: application/json",
-        "Authorization: Bearer ${BuildConfig.TMDB_API_TOKEN}",
-    )
-    @GET("3/tv/on_the_air")
-    suspend fun getOnTheAirSeries(
-        @Query("language") language: String = "en-US",
-        @Query("page") page: Int = 1,
-        @Query("timezone") timezone: String? = null,
-    ): SeriesListsDto
 
     /**
      * Get a list of TV shows ordered by popularity.
