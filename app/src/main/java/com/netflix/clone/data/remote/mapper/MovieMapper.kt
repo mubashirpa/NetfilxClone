@@ -1,6 +1,7 @@
 package com.netflix.clone.data.remote.mapper
 
 import com.netflix.clone.data.local.entity.movies.MovieEntity
+import com.netflix.clone.data.local.entity.movies.NowPlayingMoviesEntity
 import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
 import com.netflix.clone.data.local.entity.movies.UpcomingMoviesEntity
 import com.netflix.clone.data.remote.dto.movie.MovieResult
@@ -49,15 +50,13 @@ fun MovieResult.toPopularMoviesEntity(): PopularMoviesEntity =
     )
 
 fun PopularMoviesEntity.toMovie(): Movie =
-    movie.let { movie ->
-        Movie(
-            backdropPath = movie.backdropPath,
-            id = movie.movieId,
-            overview = movie.overview,
-            posterPath = movie.posterPath,
-            title = movie.title,
-        )
-    }
+    Movie(
+        backdropPath = movie.backdropPath,
+        id = movie.movieId,
+        overview = movie.overview,
+        posterPath = movie.posterPath,
+        title = movie.title,
+    )
 
 fun MovieResult.toUpcomingMoviesEntity(): UpcomingMoviesEntity =
     UpcomingMoviesEntity(
@@ -72,12 +71,31 @@ fun MovieResult.toUpcomingMoviesEntity(): UpcomingMoviesEntity =
     )
 
 fun UpcomingMoviesEntity.toMovie(): Movie =
-    movie.let { movie ->
-        Movie(
-            backdropPath = movie.backdropPath,
-            id = movie.movieId,
-            overview = movie.overview,
-            posterPath = movie.posterPath,
-            title = movie.title,
-        )
-    }
+    Movie(
+        backdropPath = movie.backdropPath,
+        id = movie.movieId,
+        overview = movie.overview,
+        posterPath = movie.posterPath,
+        title = movie.title,
+    )
+
+fun MovieResult.toNowPlayingMoviesEntity(): NowPlayingMoviesEntity =
+    NowPlayingMoviesEntity(
+        movie =
+            MovieEntity(
+                backdropPath = backdropPath,
+                movieId = id,
+                overview = overview,
+                posterPath = posterPath,
+                title = title,
+            ),
+    )
+
+fun NowPlayingMoviesEntity.toMovie(): Movie =
+    Movie(
+        backdropPath = movie.backdropPath,
+        id = movie.movieId,
+        overview = movie.overview,
+        posterPath = movie.posterPath,
+        title = movie.title,
+    )
