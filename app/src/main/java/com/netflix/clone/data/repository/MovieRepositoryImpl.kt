@@ -5,13 +5,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.netflix.clone.data.local.database.NetflixDatabase
+import com.netflix.clone.data.local.entity.list.UserListEntity
 import com.netflix.clone.data.local.entity.movies.NowPlayingMoviesEntity
 import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
 import com.netflix.clone.data.local.entity.movies.UpcomingMoviesEntity
 import com.netflix.clone.data.local.entity.series.PopularSeriesEntity
 import com.netflix.clone.data.local.entity.series.TopRatedSeriesEntity
 import com.netflix.clone.data.remote.MovieApi
-import com.netflix.clone.data.remote.dto.list.ListResult
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
 import com.netflix.clone.data.remote.dto.trending.TrendingDto
@@ -20,7 +20,7 @@ import com.netflix.clone.data.remote.mediator.PopularMoviesRemoteMediator
 import com.netflix.clone.data.remote.mediator.PopularTvRemoteMediator
 import com.netflix.clone.data.remote.mediator.TopRatedTvRemoteMediator
 import com.netflix.clone.data.remote.mediator.UpcomingMoviesRemoteMediator
-import com.netflix.clone.data.remote.paging.ListPagingSource
+import com.netflix.clone.data.remote.mediator.UserListRemoteMediator
 import com.netflix.clone.domain.repository.MovieRepository
 import com.netflix.clone.domain.repository.TimeWindow
 import kotlinx.coroutines.flow.Flow
@@ -34,11 +34,19 @@ class MovieRepositoryImpl(
         listId: Int,
         language: String,
         page: Int,
-    ): Flow<PagingData<ListResult>> =
+    ): Flow<PagingData<UserListEntity>> =
         Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
+            remoteMediator =
+                UserListRemoteMediator(
+                    api = movieApi,
+                    database = database,
+                    listId = listId,
+                    language = language,
+                    page = page,
+                ),
             pagingSourceFactory = {
-                ListPagingSource(movieApi, listId, language, page)
+                database.userListDao().pagingSource()
             },
         ).flow
 

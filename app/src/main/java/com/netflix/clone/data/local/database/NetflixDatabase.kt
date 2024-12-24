@@ -7,8 +7,10 @@ import com.netflix.clone.data.local.dao.RemoteKeyDao
 import com.netflix.clone.data.local.dao.SeriesDao
 import com.netflix.clone.data.local.dao.TrendingDao
 import com.netflix.clone.data.local.dao.UpdateTimeDao
+import com.netflix.clone.data.local.dao.UserListDao
 import com.netflix.clone.data.local.entity.RemoteKey
 import com.netflix.clone.data.local.entity.UpdateTime
+import com.netflix.clone.data.local.entity.list.UserListEntity
 import com.netflix.clone.data.local.entity.movies.NowPlayingMoviesEntity
 import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
 import com.netflix.clone.data.local.entity.movies.UpcomingMoviesEntity
@@ -20,7 +22,7 @@ import com.netflix.clone.data.local.entity.trending.TrendingEntity
     entities = [
         PopularMoviesEntity::class, UpcomingMoviesEntity::class, NowPlayingMoviesEntity::class,
         PopularSeriesEntity::class, TopRatedSeriesEntity::class, TrendingEntity::class,
-        RemoteKey::class, UpdateTime::class,
+        UserListEntity::class, RemoteKey::class, UpdateTime::class,
     ],
     version = 1,
 )
@@ -30,6 +32,8 @@ abstract class NetflixDatabase : RoomDatabase() {
     abstract fun seriesDao(): SeriesDao
 
     abstract fun trendingDao(): TrendingDao
+
+    abstract fun userListDao(): UserListDao
 
     abstract fun remoteKeyDao(): RemoteKeyDao
 

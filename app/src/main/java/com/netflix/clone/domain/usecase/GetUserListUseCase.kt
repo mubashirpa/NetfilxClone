@@ -8,7 +8,7 @@ import com.netflix.clone.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetListUseCase(
+class GetUserListUseCase(
     private val movieRepository: MovieRepository,
 ) {
     suspend operator fun invoke(
