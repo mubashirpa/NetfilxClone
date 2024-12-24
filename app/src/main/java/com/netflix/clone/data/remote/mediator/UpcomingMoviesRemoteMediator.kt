@@ -9,21 +9,21 @@ import com.netflix.clone.core.utils.CacheUtils
 import com.netflix.clone.data.local.database.NetflixDatabase
 import com.netflix.clone.data.local.entity.RemoteKey
 import com.netflix.clone.data.local.entity.UpdateTime
-import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
+import com.netflix.clone.data.local.entity.movies.UpcomingMoviesEntity
 import com.netflix.clone.data.remote.MovieApi
-import com.netflix.clone.data.remote.mapper.toPopularMoviesEntity
+import com.netflix.clone.data.remote.mapper.toUpcomingMoviesEntity
 import retrofit2.HttpException
 import java.io.IOException
 
 @OptIn(ExperimentalPagingApi::class)
-class PopularMoviesRemoteMediator(
+class UpcomingMoviesRemoteMediator(
     private val type: String,
     private val api: MovieApi,
     private val database: NetflixDatabase,
     private val language: String,
     private val page: Int,
     private val region: String?,
-) : RemoteMediator<Int, PopularMoviesEntity>() {
+) : RemoteMediator<Int, UpcomingMoviesEntity>() {
     private val moviesDao = database.moviesDao()
     private val remoteKeyDao = database.remoteKeyDao()
     private val updateTimeDao = database.updateTimeDao()
@@ -39,7 +39,7 @@ class PopularMoviesRemoteMediator(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, PopularMoviesEntity>,
+        state: PagingState<Int, UpcomingMoviesEntity>,
     ): MediatorResult {
         return try {
             val loadKey =
@@ -65,12 +65,12 @@ class PopularMoviesRemoteMediator(
                 }
 
             val response =
-                api.getPopularMovies(
+                api.getUpcomingMovies(
                     language = language,
                     page = loadKey,
                     region = region,
                 )
-            val movies = response.results?.map { it.toPopularMoviesEntity() }.orEmpty()
+            val movies = response.results?.map { it.toUpcomingMoviesEntity() }.orEmpty()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
@@ -91,12 +91,12 @@ class PopularMoviesRemoteMediator(
     private suspend fun clearLocalDatabase() {
         updateTimeDao.deleteByType(type)
         remoteKeyDao.deleteByType(type)
-        moviesDao.popularClearAll()
+        moviesDao.upcomingClearAll()
     }
 
     private suspend fun insertLocalDatabase(
         nextKey: Int?,
-        movies: List<PopularMoviesEntity>,
+        movies: List<UpcomingMoviesEntity>,
     ) {
         remoteKeyDao.insertOrReplace(
             RemoteKey(
@@ -104,7 +104,7 @@ class PopularMoviesRemoteMediator(
                 nextKey = nextKey,
             ),
         )
-        moviesDao.popularInsertAll(movies)
+        moviesDao.upcomingInsertAll(movies)
         updateTimeDao.insertOrReplace(
             UpdateTime(
                 type = type,

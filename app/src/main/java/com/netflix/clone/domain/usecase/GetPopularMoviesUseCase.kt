@@ -2,7 +2,7 @@ package com.netflix.clone.domain.usecase
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.netflix.clone.data.remote.mapper.toMovieResultModel
+import com.netflix.clone.data.remote.mapper.toMovie
 import com.netflix.clone.domain.model.movie.Movie
 import com.netflix.clone.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +18,7 @@ class GetPopularMoviesUseCase(
     ): Flow<PagingData<Movie>> =
         movieRepository.getPopularMovies(language, page, region).map { pagingData ->
             pagingData.map {
-                it.toMovieResultModel()
+                it.toMovie()
             }
         }
 }

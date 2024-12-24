@@ -10,14 +10,15 @@ import com.netflix.clone.data.local.dao.UpdateTimeDao
 import com.netflix.clone.data.local.entity.RemoteKey
 import com.netflix.clone.data.local.entity.UpdateTime
 import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
+import com.netflix.clone.data.local.entity.movies.UpcomingMoviesEntity
 import com.netflix.clone.data.local.entity.series.PopularSeriesEntity
 import com.netflix.clone.data.local.entity.series.TopRatedSeriesEntity
 import com.netflix.clone.data.local.entity.trending.TrendingEntity
 
 @Database(
     entities = [
-        PopularMoviesEntity::class, PopularSeriesEntity::class, TopRatedSeriesEntity::class,
-        TrendingEntity::class, RemoteKey::class, UpdateTime::class,
+        PopularMoviesEntity::class, UpcomingMoviesEntity::class, PopularSeriesEntity::class,
+        TopRatedSeriesEntity::class, TrendingEntity::class, RemoteKey::class, UpdateTime::class,
     ],
     version = 1,
 )

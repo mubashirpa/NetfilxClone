@@ -2,6 +2,7 @@ package com.netflix.clone.data.remote.mapper
 
 import com.netflix.clone.data.local.entity.movies.MovieEntity
 import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
+import com.netflix.clone.data.local.entity.movies.UpcomingMoviesEntity
 import com.netflix.clone.data.remote.dto.movie.MovieResult
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
 import com.netflix.clone.domain.model.movie.Movie
@@ -47,7 +48,30 @@ fun MovieResult.toPopularMoviesEntity(): PopularMoviesEntity =
             ),
     )
 
-fun PopularMoviesEntity.toMovieResultModel(): Movie =
+fun PopularMoviesEntity.toMovie(): Movie =
+    movie.let { movie ->
+        Movie(
+            backdropPath = movie.backdropPath,
+            id = movie.movieId,
+            overview = movie.overview,
+            posterPath = movie.posterPath,
+            title = movie.title,
+        )
+    }
+
+fun MovieResult.toUpcomingMoviesEntity(): UpcomingMoviesEntity =
+    UpcomingMoviesEntity(
+        movie =
+            MovieEntity(
+                backdropPath = backdropPath,
+                movieId = id,
+                overview = overview,
+                posterPath = posterPath,
+                title = title,
+            ),
+    )
+
+fun UpcomingMoviesEntity.toMovie(): Movie =
     movie.let { movie ->
         Movie(
             backdropPath = movie.backdropPath,
