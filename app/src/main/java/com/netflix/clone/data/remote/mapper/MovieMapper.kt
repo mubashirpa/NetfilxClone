@@ -4,6 +4,9 @@ import com.netflix.clone.data.local.entity.movies.MovieEntity
 import com.netflix.clone.data.local.entity.movies.NowPlayingMoviesEntity
 import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
 import com.netflix.clone.data.local.entity.movies.UpcomingMoviesEntity
+import com.netflix.clone.data.local.entity.movies.details.MovieDetailsEntity
+import com.netflix.clone.data.local.entity.movies.details.MovieDetailsWithRecommendations
+import com.netflix.clone.data.local.entity.movies.details.RecommendationEntity
 import com.netflix.clone.data.remote.dto.movie.MovieResult
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
 import com.netflix.clone.domain.model.movie.Movie
@@ -98,4 +101,60 @@ fun NowPlayingMoviesEntity.toMovie(): Movie =
         overview = movie.overview,
         posterPath = movie.posterPath,
         title = movie.title,
+    )
+
+fun MovieDetailsWithRecommendations.toMovieDetails(): MovieDetails =
+    MovieDetails(
+        backdropPath = movieDetails.backdropPath,
+        cast = movieDetails.cast,
+        directors = movieDetails.directors,
+        genres = movieDetails.genres,
+        id = movieDetails.movieId,
+        overview = movieDetails.overview,
+        posterPath = movieDetails.posterPath,
+        recommendations = recommendations.map { it.toMovie() },
+        releaseDate = movieDetails.releaseDate,
+        runtime = movieDetails.runtime,
+        title = movieDetails.title,
+    )
+
+fun RecommendationEntity.toMovie(): Movie =
+    Movie(
+        backdropPath = movie.backdropPath,
+        id = movie.movieId,
+        overview = movie.overview,
+        posterPath = movie.posterPath,
+        title = movie.title,
+    )
+
+fun MovieDetails.toMovieDetailsWithRecommendations(lastUpdated: Long): MovieDetailsWithRecommendations =
+    MovieDetailsWithRecommendations(
+        movieDetails =
+            MovieDetailsEntity(
+                movieId = id!!,
+                backdropPath = backdropPath,
+                cast = cast,
+                directors = directors,
+                genres = genres,
+                lastUpdated = lastUpdated,
+                overview = overview,
+                posterPath = posterPath,
+                releaseDate = releaseDate,
+                runtime = runtime,
+                title = title,
+            ),
+        recommendations = recommendations?.map { it.toRecommendationEntity() } ?: emptyList(),
+    )
+
+fun Movie.toRecommendationEntity(): RecommendationEntity =
+    RecommendationEntity(
+        recommendationId = id!!,
+        movie =
+            MovieEntity(
+                backdropPath = backdropPath,
+                movieId = id,
+                overview = overview,
+                posterPath = posterPath,
+                title = title,
+            ),
     )
