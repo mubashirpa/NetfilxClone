@@ -5,8 +5,10 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.netflix.clone.core.utils.CacheUtils
 import com.netflix.clone.data.local.database.NetflixDatabase
 import com.netflix.clone.data.local.entity.RemoteKey
+import com.netflix.clone.data.local.entity.UpdateTime
 import com.netflix.clone.data.local.entity.series.TopRatedSeriesEntity
 import com.netflix.clone.data.remote.MovieApi
 import com.netflix.clone.data.remote.mapper.toTopRatedSeriesEntity
@@ -21,8 +23,18 @@ class TopRatedTvRemoteMediator(
     private val language: String,
     private val page: Int,
 ) : RemoteMediator<Int, TopRatedSeriesEntity>() {
-    val seriesDao = database.seriesDao()
-    val remoteKeyDao = database.remoteKeyDao()
+    private val seriesDao = database.seriesDao()
+    private val remoteKeyDao = database.remoteKeyDao()
+    private val updateTimeDao = database.updateTimeDao()
+
+    override suspend fun initialize(): InitializeAction {
+        val lastUpdated = updateTimeDao.updateTimeByType(type)?.lastUpdated ?: 0
+        return if (CacheUtils.isCacheValid(lastUpdated)) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
 
     override suspend fun load(
         loadType: LoadType,
@@ -56,21 +68,14 @@ class TopRatedTvRemoteMediator(
                     language = language,
                     page = loadKey,
                 )
-            val tv = response.results?.map { it.toTopRatedSeriesEntity() }.orEmpty()
+            val series = response.results?.map { it.toTopRatedSeriesEntity() }.orEmpty()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    remoteKeyDao.deleteByType(type)
-                    seriesDao.topRatedClearAll()
+                    clearLocalDatabase()
                 }
 
-                remoteKeyDao.insertOrReplace(
-                    RemoteKey(
-                        type = type,
-                        nextKey = response.page?.plus(1),
-                    ),
-                )
-                seriesDao.topRatedInsertAll(tv)
+                insertLocalDatabase(nextKey = response.page?.plus(1), series = series)
             }
 
             MediatorResult.Success(endOfPaginationReached = response.page == response.totalPages)
@@ -79,5 +84,30 @@ class TopRatedTvRemoteMediator(
         } catch (e: HttpException) {
             MediatorResult.Error(e)
         }
+    }
+
+    private suspend fun clearLocalDatabase() {
+        updateTimeDao.deleteByType(type)
+        remoteKeyDao.deleteByType(type)
+        seriesDao.topRatedClearAll()
+    }
+
+    private suspend fun insertLocalDatabase(
+        nextKey: Int?,
+        series: List<TopRatedSeriesEntity>,
+    ) {
+        remoteKeyDao.insertOrReplace(
+            RemoteKey(
+                type = type,
+                nextKey = nextKey,
+            ),
+        )
+        seriesDao.topRatedInsertAll(series)
+        updateTimeDao.insertOrReplace(
+            UpdateTime(
+                type = type,
+                lastUpdated = System.currentTimeMillis(),
+            ),
+        )
     }
 }

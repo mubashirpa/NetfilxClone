@@ -5,8 +5,10 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.netflix.clone.core.utils.CacheUtils
 import com.netflix.clone.data.local.database.NetflixDatabase
 import com.netflix.clone.data.local.entity.RemoteKey
+import com.netflix.clone.data.local.entity.UpdateTime
 import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
 import com.netflix.clone.data.remote.MovieApi
 import com.netflix.clone.data.remote.mapper.toPopularMoviesEntity
@@ -22,8 +24,18 @@ class PopularMoviesRemoteMediator(
     private val page: Int,
     private val region: String?,
 ) : RemoteMediator<Int, PopularMoviesEntity>() {
-    val moviesDao = database.moviesDao()
-    val remoteKeyDao = database.remoteKeyDao()
+    private val moviesDao = database.moviesDao()
+    private val remoteKeyDao = database.remoteKeyDao()
+    private val updateTimeDao = database.updateTimeDao()
+
+    override suspend fun initialize(): InitializeAction {
+        val lastUpdated = updateTimeDao.updateTimeByType(type)?.lastUpdated ?: 0
+        return if (CacheUtils.isCacheValid(lastUpdated)) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
 
     override suspend fun load(
         loadType: LoadType,
@@ -62,17 +74,10 @@ class PopularMoviesRemoteMediator(
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    remoteKeyDao.deleteByType(type)
-                    moviesDao.clearAll()
+                    clearLocalDatabase()
                 }
 
-                remoteKeyDao.insertOrReplace(
-                    RemoteKey(
-                        type = type,
-                        nextKey = response.page?.plus(1),
-                    ),
-                )
-                moviesDao.insertAll(movies)
+                insertLocalDatabase(nextKey = response.page?.plus(1), movies = movies)
             }
 
             MediatorResult.Success(endOfPaginationReached = response.page == response.totalPages)
@@ -81,5 +86,30 @@ class PopularMoviesRemoteMediator(
         } catch (e: HttpException) {
             MediatorResult.Error(e)
         }
+    }
+
+    private suspend fun clearLocalDatabase() {
+        updateTimeDao.deleteByType(type)
+        remoteKeyDao.deleteByType(type)
+        moviesDao.clearAll()
+    }
+
+    private suspend fun insertLocalDatabase(
+        nextKey: Int?,
+        movies: List<PopularMoviesEntity>,
+    ) {
+        remoteKeyDao.insertOrReplace(
+            RemoteKey(
+                type = type,
+                nextKey = nextKey,
+            ),
+        )
+        moviesDao.insertAll(movies)
+        updateTimeDao.insertOrReplace(
+            UpdateTime(
+                type = type,
+                lastUpdated = System.currentTimeMillis(),
+            ),
+        )
     }
 }
