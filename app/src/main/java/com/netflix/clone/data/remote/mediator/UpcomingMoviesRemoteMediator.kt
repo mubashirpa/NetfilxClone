@@ -15,14 +15,16 @@ import com.netflix.clone.data.remote.mapper.toUpcomingMoviesEntity
 import retrofit2.HttpException
 import java.io.IOException
 
+private const val UPCOMING_MOVIES_TYPE = "upcoming_movies"
+
 @OptIn(ExperimentalPagingApi::class)
 class UpcomingMoviesRemoteMediator(
-    private val type: String,
     private val api: MovieApi,
     private val database: NetflixDatabase,
     private val language: String,
     private val page: Int,
     private val region: String?,
+    private val type: String = UPCOMING_MOVIES_TYPE,
 ) : RemoteMediator<Int, UpcomingMoviesEntity>() {
     private val moviesDao = database.moviesDao()
     private val remoteKeyDao = database.remoteKeyDao()

@@ -63,7 +63,6 @@ class MovieRepositoryImpl(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
             remoteMediator =
                 PopularMoviesRemoteMediator(
-                    type = "popular_movie",
                     api = movieApi,
                     database = database,
                     language = language,
@@ -84,7 +83,6 @@ class MovieRepositoryImpl(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
             remoteMediator =
                 UpcomingMoviesRemoteMediator(
-                    type = "upcoming_movie",
                     api = movieApi,
                     database = database,
                     language = language,
@@ -115,7 +113,6 @@ class MovieRepositoryImpl(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
             remoteMediator =
                 PopularTvRemoteMediator(
-                    type = "popular_series",
                     api = movieApi,
                     database = database,
                     language = language,
@@ -134,7 +131,6 @@ class MovieRepositoryImpl(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE),
             remoteMediator =
                 TopRatedTvRemoteMediator(
-                    type = "top_rated_series",
                     api = movieApi,
                     database = database,
                     language = language,
