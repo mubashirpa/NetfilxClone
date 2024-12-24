@@ -2,7 +2,6 @@ package com.netflix.clone.data.remote.dto.series.details
 
 import com.google.gson.annotations.SerializedName
 import com.netflix.clone.data.remote.dto.series.SeriesListsDto
-import com.netflix.clone.data.remote.dto.series.contentRating.ContentRating
 import com.netflix.clone.data.remote.dto.series.credits.SeriesCreditsDto
 
 data class SeriesDetailsDto(
@@ -58,8 +57,6 @@ data class SeriesDetailsDto(
     @SerializedName("vote_count")
     val voteCount: Int? = null,
     // AppendToResponse
-    @SerializedName("content_ratings")
-    val contentRatings: ContentRating? = null,
     val credits: SeriesCreditsDto? = null,
     val recommendations: SeriesListsDto? = null,
 )

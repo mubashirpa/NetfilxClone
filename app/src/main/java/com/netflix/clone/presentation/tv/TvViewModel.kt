@@ -28,7 +28,7 @@ class TvViewModel(
     private fun getTvDetails(seriesId: Int) {
         getSeriesDetailsUseCase(
             seriesId,
-            appendToResponse = "content_ratings,credits,recommendations",
+            appendToResponse = "credits,recommendations",
         ).onEach { resource ->
             uiState = uiState.copy(tvDetailsResource = resource)
         }.launchIn(viewModelScope)
