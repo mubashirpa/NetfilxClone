@@ -1,6 +1,5 @@
 package com.netflix.clone.domain.usecase
 
-import android.util.Log
 import com.netflix.clone.core.utils.CacheUtils
 import com.netflix.clone.core.utils.Resource
 import com.netflix.clone.core.utils.UiText
@@ -31,8 +30,6 @@ class GetMovieDetailsUseCase(
 
                 val cachedData = movieDetailsLocalRepository.getCachedMovieDetailsById(movieId)
                 val lastUpdated = cachedData?.movieDetails?.lastUpdated ?: 0
-
-                Log.d("hello", cachedData.toString())
 
                 if (cachedData != null && CacheUtils.isCacheValid(lastUpdated)) {
                     emit(Resource.Success(cachedData.toMovieDetails()))
