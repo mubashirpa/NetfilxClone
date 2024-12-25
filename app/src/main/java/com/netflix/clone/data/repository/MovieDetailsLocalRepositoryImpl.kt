@@ -4,7 +4,7 @@ import com.netflix.clone.data.local.database.NetflixDatabase
 import com.netflix.clone.data.local.entity.movies.details.MovieDetailsEntity
 import com.netflix.clone.data.local.entity.movies.details.MovieDetailsWithRecommendations
 import com.netflix.clone.data.local.entity.movies.details.MovieRecommendationCrossRef
-import com.netflix.clone.data.local.entity.movies.details.RecommendationEntity
+import com.netflix.clone.data.local.entity.movies.details.MovieRecommendationEntity
 import com.netflix.clone.domain.repository.MovieDetailsLocalRepository
 
 class MovieDetailsLocalRepositoryImpl(
@@ -21,7 +21,7 @@ class MovieDetailsLocalRepositoryImpl(
 
     override suspend fun saveMovieDetails(
         movieDetails: MovieDetailsEntity,
-        recommendations: List<RecommendationEntity>,
+        recommendations: List<MovieRecommendationEntity>,
         movieRecommendationCrossRefs: List<MovieRecommendationCrossRef>,
     ) {
         movieDetailsDao.upsertMovieDetailsWithRecommendations(

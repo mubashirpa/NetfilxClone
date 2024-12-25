@@ -3,7 +3,7 @@ package com.netflix.clone.domain.repository
 import com.netflix.clone.data.local.entity.movies.details.MovieDetailsEntity
 import com.netflix.clone.data.local.entity.movies.details.MovieDetailsWithRecommendations
 import com.netflix.clone.data.local.entity.movies.details.MovieRecommendationCrossRef
-import com.netflix.clone.data.local.entity.movies.details.RecommendationEntity
+import com.netflix.clone.data.local.entity.movies.details.MovieRecommendationEntity
 
 interface MovieDetailsLocalRepository {
     suspend fun getCachedMovieDetailsById(id: Int): MovieDetailsWithRecommendations?
@@ -12,7 +12,7 @@ interface MovieDetailsLocalRepository {
 
     suspend fun saveMovieDetails(
         movieDetails: MovieDetailsEntity,
-        recommendations: List<RecommendationEntity>,
+        recommendations: List<MovieRecommendationEntity>,
         movieRecommendationCrossRefs: List<MovieRecommendationCrossRef>,
     )
 }

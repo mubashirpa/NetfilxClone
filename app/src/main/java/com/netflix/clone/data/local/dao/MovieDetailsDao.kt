@@ -7,7 +7,7 @@ import androidx.room.Upsert
 import com.netflix.clone.data.local.entity.movies.details.MovieDetailsEntity
 import com.netflix.clone.data.local.entity.movies.details.MovieDetailsWithRecommendations
 import com.netflix.clone.data.local.entity.movies.details.MovieRecommendationCrossRef
-import com.netflix.clone.data.local.entity.movies.details.RecommendationEntity
+import com.netflix.clone.data.local.entity.movies.details.MovieRecommendationEntity
 
 @Dao
 interface MovieDetailsDao {
@@ -15,7 +15,7 @@ interface MovieDetailsDao {
     suspend fun upsertMovieDetails(movieDetails: MovieDetailsEntity)
 
     @Upsert
-    suspend fun upsertRecommendations(recommendations: List<RecommendationEntity>)
+    suspend fun upsertRecommendations(recommendations: List<MovieRecommendationEntity>)
 
     @Upsert
     suspend fun upsertMovieRecommendationCrossRef(movieRecommendationCrossRef: List<MovieRecommendationCrossRef>)
@@ -33,7 +33,7 @@ interface MovieDetailsDao {
     @Transaction
     suspend fun upsertMovieDetailsWithRecommendations(
         movieDetails: MovieDetailsEntity,
-        recommendations: List<RecommendationEntity>,
+        recommendations: List<MovieRecommendationEntity>,
         movieRecommendationCrossRefs: List<MovieRecommendationCrossRef>,
     ) {
         upsertMovieDetails(movieDetails)

@@ -11,5 +11,5 @@ data class MovieDetailsWithRecommendations(
         entityColumn = "recommendationId",
         associateBy = Junction(MovieRecommendationCrossRef::class),
     )
-    val recommendations: List<RecommendationEntity>,
+    val recommendations: List<MovieRecommendationEntity>,
 )

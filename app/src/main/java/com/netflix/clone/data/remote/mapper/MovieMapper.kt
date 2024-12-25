@@ -6,7 +6,7 @@ import com.netflix.clone.data.local.entity.movies.PopularMoviesEntity
 import com.netflix.clone.data.local.entity.movies.UpcomingMoviesEntity
 import com.netflix.clone.data.local.entity.movies.details.MovieDetailsEntity
 import com.netflix.clone.data.local.entity.movies.details.MovieDetailsWithRecommendations
-import com.netflix.clone.data.local.entity.movies.details.RecommendationEntity
+import com.netflix.clone.data.local.entity.movies.details.MovieRecommendationEntity
 import com.netflix.clone.data.remote.dto.movie.MovieResult
 import com.netflix.clone.data.remote.dto.movie.details.MovieDetailsDto
 import com.netflix.clone.domain.model.movie.Movie
@@ -118,7 +118,7 @@ fun MovieDetailsWithRecommendations.toMovieDetails(): MovieDetails =
         title = movieDetails.title,
     )
 
-fun RecommendationEntity.toMovie(): Movie =
+fun MovieRecommendationEntity.toMovie(): Movie =
     Movie(
         backdropPath = movie.backdropPath,
         id = movie.movieId,
@@ -146,8 +146,8 @@ fun MovieDetails.toMovieDetailsWithRecommendations(lastUpdated: Long): MovieDeta
         recommendations = recommendations?.map { it.toRecommendationEntity() } ?: emptyList(),
     )
 
-fun Movie.toRecommendationEntity(): RecommendationEntity =
-    RecommendationEntity(
+fun Movie.toRecommendationEntity(): MovieRecommendationEntity =
+    MovieRecommendationEntity(
         recommendationId = id!!,
         movie =
             MovieEntity(
