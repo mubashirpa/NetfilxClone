@@ -3,6 +3,9 @@ package com.netflix.clone.data.remote.mapper
 import com.netflix.clone.data.local.entity.series.PopularSeriesEntity
 import com.netflix.clone.data.local.entity.series.SeriesEntity
 import com.netflix.clone.data.local.entity.series.TopRatedSeriesEntity
+import com.netflix.clone.data.local.entity.series.details.SeriesDetailsEntity
+import com.netflix.clone.data.local.entity.series.details.SeriesDetailsWithSeasons
+import com.netflix.clone.data.local.entity.series.details.SeriesSeasonEntity
 import com.netflix.clone.data.remote.dto.series.SeriesResult
 import com.netflix.clone.data.remote.dto.series.details.Season
 import com.netflix.clone.data.remote.dto.series.details.SeriesDetailsDto
@@ -84,4 +87,57 @@ fun TopRatedSeriesEntity.toSeries(): Series =
         name = series.name,
         posterPath = series.posterPath,
         voteAverage = series.voteAverage,
+    )
+
+fun SeriesDetailsWithSeasons.toSeriesDetails(): SeriesDetails =
+    SeriesDetails(
+        backdropPath = seriesDetails.backdropPath,
+        casts = seriesDetails.casts,
+        createdBy = seriesDetails.createdBy,
+        firstAirDate = seriesDetails.firstAirDate,
+        genres = seriesDetails.genres,
+        id = seriesDetails.seriesId,
+        name = seriesDetails.name,
+        numberOfSeasons = seriesDetails.numberOfSeasons,
+        overview = seriesDetails.overview,
+        seasons = seasons.map { it.toSeriesSeason() },
+    )
+
+fun SeriesSeasonEntity.toSeriesSeason(): SeriesSeason =
+    SeriesSeason(
+        airDate = airDate,
+        episodeCount = episodeCount,
+        id = seasonId,
+        name = name,
+        overview = overview,
+        posterPath = posterPath,
+    )
+
+fun SeriesDetails.toSeriesDetailsWithSeasons(lastUpdated: Long): SeriesDetailsWithSeasons =
+    SeriesDetailsWithSeasons(
+        seriesDetails =
+            SeriesDetailsEntity(
+                seriesId = id!!,
+                backdropPath = backdropPath,
+                casts = casts,
+                createdBy = createdBy,
+                firstAirDate = firstAirDate,
+                genres = genres,
+                lastUpdated = lastUpdated,
+                name = name,
+                numberOfSeasons = numberOfSeasons,
+                overview = overview,
+            ),
+        seasons = seasons?.map { it.toSeriesSeasonEntity(id) } ?: emptyList(),
+    )
+
+fun SeriesSeason.toSeriesSeasonEntity(seriesId: Int): SeriesSeasonEntity =
+    SeriesSeasonEntity(
+        seasonId = id!!,
+        airDate = airDate,
+        episodeCount = episodeCount,
+        name = name,
+        overview = overview,
+        posterPath = posterPath,
+        seriesId = seriesId,
     )

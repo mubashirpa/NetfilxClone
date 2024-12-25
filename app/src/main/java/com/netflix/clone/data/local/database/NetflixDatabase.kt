@@ -6,6 +6,7 @@ import com.netflix.clone.data.local.dao.MovieDetailsDao
 import com.netflix.clone.data.local.dao.MoviesDao
 import com.netflix.clone.data.local.dao.RemoteKeyDao
 import com.netflix.clone.data.local.dao.SeriesDao
+import com.netflix.clone.data.local.dao.SeriesDetailsDao
 import com.netflix.clone.data.local.dao.TrendingDao
 import com.netflix.clone.data.local.dao.UpdateTimeDao
 import com.netflix.clone.data.local.dao.UserListDao
@@ -20,6 +21,9 @@ import com.netflix.clone.data.local.entity.movies.details.MovieRecommendationCro
 import com.netflix.clone.data.local.entity.movies.details.RecommendationEntity
 import com.netflix.clone.data.local.entity.series.PopularSeriesEntity
 import com.netflix.clone.data.local.entity.series.TopRatedSeriesEntity
+import com.netflix.clone.data.local.entity.series.details.SeriesDetailsEntity
+import com.netflix.clone.data.local.entity.series.details.SeriesSeasonCrossRef
+import com.netflix.clone.data.local.entity.series.details.SeriesSeasonEntity
 import com.netflix.clone.data.local.entity.trending.TrendingEntity
 
 @Database(
@@ -27,7 +31,8 @@ import com.netflix.clone.data.local.entity.trending.TrendingEntity
         PopularMoviesEntity::class, UpcomingMoviesEntity::class, NowPlayingMoviesEntity::class,
         PopularSeriesEntity::class, TopRatedSeriesEntity::class, TrendingEntity::class,
         UserListEntity::class, RemoteKey::class, UpdateTime::class, MovieDetailsEntity::class,
-        MovieRecommendationCrossRef::class, RecommendationEntity::class,
+        MovieRecommendationCrossRef::class, RecommendationEntity::class, SeriesDetailsEntity::class,
+        SeriesSeasonEntity::class, SeriesSeasonCrossRef::class,
     ],
     version = 1,
 )
@@ -45,4 +50,6 @@ abstract class NetflixDatabase : RoomDatabase() {
     abstract fun updateTimeDao(): UpdateTimeDao
 
     abstract fun movieDetailsDao(): MovieDetailsDao
+
+    abstract fun seriesDetailsDao(): SeriesDetailsDao
 }
