@@ -24,7 +24,7 @@ interface MovieDetailsDao {
     suspend fun deleteMovieDetails(id: Int)
 
     @Query("DELETE FROM MovieRecommendationCrossRef WHERE movieId = :movieId")
-    suspend fun deletePlaylistTrackCrossRef(movieId: Int)
+    suspend fun deleteMovieRecommendationCrossRef(movieId: Int)
 
     @Transaction
     @Query("SELECT * FROM movie_details WHERE movieId = :id")
@@ -43,7 +43,7 @@ interface MovieDetailsDao {
 
     @Transaction
     suspend fun deleteMovieDetailsWithCrossRefs(id: Int) {
-        deletePlaylistTrackCrossRef(id)
+        deleteMovieRecommendationCrossRef(id)
         deleteMovieDetails(id)
     }
 }
