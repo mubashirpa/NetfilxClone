@@ -8,6 +8,12 @@ data class SeriesDetailsWithSeasons(
     @Embedded val seriesDetails: SeriesDetailsEntity,
     @Relation(
         parentColumn = "seriesId",
+        entityColumn = "recommendationId",
+        associateBy = Junction(SeriesRecommendationCrossRef::class),
+    )
+    val recommendations: List<SeriesRecommendationEntity>,
+    @Relation(
+        parentColumn = "seriesId",
         entityColumn = "seasonId",
         associateBy = Junction(SeriesSeasonCrossRef::class),
     )

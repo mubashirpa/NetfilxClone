@@ -5,6 +5,7 @@ import com.netflix.clone.data.local.entity.series.SeriesEntity
 import com.netflix.clone.data.local.entity.series.TopRatedSeriesEntity
 import com.netflix.clone.data.local.entity.series.details.SeriesDetailsEntity
 import com.netflix.clone.data.local.entity.series.details.SeriesDetailsWithSeasons
+import com.netflix.clone.data.local.entity.series.details.SeriesRecommendationEntity
 import com.netflix.clone.data.local.entity.series.details.SeriesSeasonEntity
 import com.netflix.clone.data.remote.dto.series.SeriesResult
 import com.netflix.clone.data.remote.dto.series.details.Season
@@ -100,6 +101,7 @@ fun SeriesDetailsWithSeasons.toSeriesDetails(): SeriesDetails =
         name = seriesDetails.name,
         numberOfSeasons = seriesDetails.numberOfSeasons,
         overview = seriesDetails.overview,
+        recommendations = recommendations.map { it.toSeries() },
         seasons = seasons.map { it.toSeriesSeason() },
     )
 
@@ -128,6 +130,7 @@ fun SeriesDetails.toSeriesDetailsWithSeasons(lastUpdated: Long): SeriesDetailsWi
                 numberOfSeasons = numberOfSeasons,
                 overview = overview,
             ),
+        recommendations = recommendations?.map { it.toSeriesRecommendationEntity() } ?: emptyList(),
         seasons = seasons?.map { it.toSeriesSeasonEntity(id) } ?: emptyList(),
     )
 
@@ -140,4 +143,26 @@ fun SeriesSeason.toSeriesSeasonEntity(seriesId: Int): SeriesSeasonEntity =
         overview = overview,
         posterPath = posterPath,
         seriesId = seriesId,
+    )
+
+fun SeriesRecommendationEntity.toSeries(): Series =
+    Series(
+        firstAirDate = series.firstAirDate,
+        id = series.seriesId,
+        name = series.name,
+        posterPath = series.posterPath,
+        voteAverage = series.voteAverage,
+    )
+
+fun Series.toSeriesRecommendationEntity(): SeriesRecommendationEntity =
+    SeriesRecommendationEntity(
+        recommendationId = id!!,
+        series =
+            SeriesEntity(
+                firstAirDate = firstAirDate,
+                name = name,
+                posterPath = posterPath,
+                seriesId = id,
+                voteAverage = voteAverage,
+            ),
     )

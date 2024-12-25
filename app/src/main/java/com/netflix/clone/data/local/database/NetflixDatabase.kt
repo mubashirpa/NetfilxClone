@@ -22,6 +22,8 @@ import com.netflix.clone.data.local.entity.movies.details.RecommendationEntity
 import com.netflix.clone.data.local.entity.series.PopularSeriesEntity
 import com.netflix.clone.data.local.entity.series.TopRatedSeriesEntity
 import com.netflix.clone.data.local.entity.series.details.SeriesDetailsEntity
+import com.netflix.clone.data.local.entity.series.details.SeriesRecommendationCrossRef
+import com.netflix.clone.data.local.entity.series.details.SeriesRecommendationEntity
 import com.netflix.clone.data.local.entity.series.details.SeriesSeasonCrossRef
 import com.netflix.clone.data.local.entity.series.details.SeriesSeasonEntity
 import com.netflix.clone.data.local.entity.trending.TrendingEntity
@@ -32,7 +34,8 @@ import com.netflix.clone.data.local.entity.trending.TrendingEntity
         PopularSeriesEntity::class, TopRatedSeriesEntity::class, TrendingEntity::class,
         UserListEntity::class, RemoteKey::class, UpdateTime::class, MovieDetailsEntity::class,
         MovieRecommendationCrossRef::class, RecommendationEntity::class, SeriesDetailsEntity::class,
-        SeriesSeasonEntity::class, SeriesSeasonCrossRef::class,
+        SeriesSeasonEntity::class, SeriesSeasonCrossRef::class, SeriesRecommendationEntity::class,
+        SeriesRecommendationCrossRef::class,
     ],
     version = 1,
 )

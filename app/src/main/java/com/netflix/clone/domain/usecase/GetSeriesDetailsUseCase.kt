@@ -3,6 +3,7 @@ package com.netflix.clone.domain.usecase
 import com.netflix.clone.core.utils.CacheUtils
 import com.netflix.clone.core.utils.Resource
 import com.netflix.clone.core.utils.UiText
+import com.netflix.clone.data.local.entity.series.details.SeriesRecommendationCrossRef
 import com.netflix.clone.data.local.entity.series.details.SeriesSeasonCrossRef
 import com.netflix.clone.data.remote.mapper.toSeriesDetails
 import com.netflix.clone.data.remote.mapper.toSeriesDetailsWithSeasons
@@ -48,11 +49,19 @@ class GetSeriesDetailsUseCase(
                 seriesDetailsLocalRepository.saveSeriesDetails(
                     seriesDetails = seriesDetailsWithSeasons.seriesDetails,
                     seriesSeasons = seriesDetailsWithSeasons.seasons,
+                    seriesRecommendations = seriesDetailsWithSeasons.recommendations,
                     seriesSeasonCrossRef =
                         seriesDetailsWithSeasons.seasons.map {
                             SeriesSeasonCrossRef(
                                 seriesId = seriesDetailsWithSeasons.seriesDetails.seriesId,
                                 seasonId = it.seasonId,
+                            )
+                        },
+                    seriesRecommendationCrossRef =
+                        seriesDetailsWithSeasons.recommendations.map {
+                            SeriesRecommendationCrossRef(
+                                seriesId = seriesDetailsWithSeasons.seriesDetails.seriesId,
+                                recommendationId = it.recommendationId,
                             )
                         },
                 )
