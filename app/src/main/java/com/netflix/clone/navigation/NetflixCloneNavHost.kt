@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import com.netflix.clone.presentation.games.GamesScreen
 import com.netflix.clone.presentation.games.GamesViewModel
 import com.netflix.clone.presentation.home.HomeScreen
@@ -59,7 +60,10 @@ fun NetflixCloneNavHost(
             val viewModel = koinViewModel<MyNetflixViewModel>()
             MyNetflixScreen(uiState = viewModel.uiState)
         }
-        composable<Screen.MovieScreen> {
+        composable<Screen.MovieScreen>(
+            deepLinks =
+                listOf(navDeepLink<Screen.MovieScreen>(basePath = "https://www.themoviedb.org/movie")),
+        ) {
             val viewModel = koinViewModel<MovieViewModel>()
             MovieScreen(
                 uiState = viewModel.uiState,
@@ -68,7 +72,10 @@ fun NetflixCloneNavHost(
                 },
             )
         }
-        composable<Screen.TvScreen> {
+        composable<Screen.TvScreen>(
+            deepLinks =
+                listOf(navDeepLink<Screen.TvScreen>(basePath = "https://www.themoviedb.org/tv")),
+        ) {
             val viewModel = koinViewModel<TvViewModel>()
             TvScreen(
                 uiState = viewModel.uiState,
