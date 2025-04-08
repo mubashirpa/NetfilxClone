@@ -1,38 +1,38 @@
-# 🎬 Netflix Clone
+# Netflix Clone
 
 **Netflix Clone** is a modern Android application built using **Jetpack Compose** that simulates the
 core UI and functionality of Netflix. It allows users to explore trending, popular, and top-rated
 movies and TV shows using real-time data fetched from **The Movie Database (TMDb) API**.
 
-## 📸 Screenshots
+## Screenshots
 
 ![Screenshot](screenshots/screenshot1.png "Screenshot")
 ![Screenshot](screenshots/screenshot2.png "Screenshot")
 
-## ✨ Features
+## Features
 
-### 🎥 Movie & TV Show Browsing
+### Movie & TV Show Browsing
 
 - Browse trending, popular, and top-rated content from TMDb.
 - Display media in paginated, scrollable lists using **Paging 3**.
 - Fetch detailed movie/show info including overview, rating, poster, and release date.
 
-### 📡 Deep Link Support
+### Deep Link Support
 
 - Navigate directly to any movie or TV show screen using **deep links**.
 - Great for integration with notifications and external sources.
 
-### 🧠 Offline Caching
+### Offline Caching
 
 - **Room Database** used to cache fetched content for offline access.
 - Minimizes API calls and enhances performance.
 
-### 🧼 Clean Architecture
+### Clean Architecture
 
 - **MVVM** design with separation of concerns across **UI**, **Domain**, and **Data** layers.
 - Designed for scalability, testability, and readability.
 
-## 🧱 Tech Stack
+## Tech Stack
 
 - **Jetpack Compose** – Declarative UI framework
 - **Paging 3** – Efficient data pagination
@@ -42,7 +42,7 @@ movies and TV shows using real-time data fetched from **The Movie Database (TMDb
 - **Kotlin Coroutines + Flow** – For async and reactive programming
 - **Material 3** – UI design
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 1. **Clone the Repository**
    ```bash
